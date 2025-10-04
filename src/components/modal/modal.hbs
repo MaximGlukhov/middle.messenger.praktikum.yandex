@@ -1,0 +1,14 @@
+<div class="modal-container">
+  <div class="modal">
+    <h2 class="title">{{title}}</h2>
+    <div class="modal__body">
+      {{> @partial-block }}
+    </div>
+    <div class="modal__footer">
+      {{> Button title=labelOk type="primary" }}
+      {{#if labelCancel}}
+      {{> Button class="modal__cancelBtn" title=labelCancel type="text"}}
+      {{/if}}
+    </div>
+  </div>
+</div>

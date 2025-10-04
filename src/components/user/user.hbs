@@ -1,0 +1,16 @@
+<li class="chats__item">
+  <div class="user {{#if active}}user_active{{/if}}">
+    <img src="{{avatar}}" class="user__avatar" alt="Аватар пользователя" />
+    <div class="user__description">
+      <p class="user__name"><strong>{{name}}</strong></p>
+      <p class="user__lastMessage">
+        <strong class="user__userMessage">{{userMessage}}</strong>
+        {{message}}
+      </p>
+    </div>
+    <div class="user__infoBlock">
+      <span class="user__time">{{time}}</span>
+      <span class="user__countMessage">{{countMessage}}</span>
+    </div>
+  </div>
+</li>

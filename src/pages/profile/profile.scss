@@ -1,0 +1,100 @@
+.profile {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    min-width: 510px;
+  }
+
+  &__avatar {
+    position: relative;
+    cursor: pointer;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+
+    img {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+  }
+
+  &__avatarHidden {
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    margin: auto;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    transition: all 0.2s linear;
+
+    .profile__avatar:hover & {
+      opacity: 1;
+    }
+  }
+
+  &__name {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  &__data {
+    margin: 50px 0;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(234, 234, 234, 1);
+    }
+
+    .inputLabel {
+      margin: 0;
+    }
+
+    .input {
+      border: none;
+      padding: 0;
+      text-align: right;
+      color: $color-grey;
+    }
+
+    .button {
+      text-align: left;
+    }
+  }
+
+  &__backBtn {
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-image: url("../../assets/arrowBtn.svg");
+    transform: scale(-1, 1);
+  }
+
+  &__exitBtn {
+    color: $color-error;
+  }
+}
