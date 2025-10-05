@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "vite build && vite preview",
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build"
   },
   "devDependencies": {
     "@types/handlebars": "^4.0.40",
