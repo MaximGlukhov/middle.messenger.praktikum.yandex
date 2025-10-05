@@ -1,9 +1,9 @@
-<div class="chats">
+<main class="chats">
   <div class="chats__bar">
     <a href="#" class="chats__profileLink">
       Профиль
     </a>
-    <input class="chats__search" type="text" placeholder="Поиск" />
+    <input name="search" class="chats__search" type="text" placeholder="Поиск" />
     <ul class="chats__list">
       {{#each users}}
       {{> User}}
@@ -16,15 +16,15 @@
     {{else}}
 
     <div class="chats__notEmpty">
-      <div class="chats__currentUser">
+      <header class="chats__currentUser">
         <img class="chats__currentUserAvatar" src={{currentUserAvatar}} alt="аватар">
         <p class="chats__currentUserName"><strong>{{currentUserName}}</strong></p>
         <button class="chats__currentUserBtn" aria-label="меню пользователя" />
-      </div>
+      </header>
 
-      <div class="chats__history">
+      <section class="chats__history">
         <div class="chats__messageTime">19 июня</div>
-        <div class="chats__message chats__message_sender">
+        <article class="chats__message chats__message_sender">
           <p>Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила
             Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью
             500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с
@@ -34,18 +34,18 @@
             Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не
             попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.</p>
           <div class="chats__senderMessageTime">11:56</div>
-        </div>
-        <div class="chats__message chats__message_sender">
+        </article>
+        <article class="chats__message chats__message_sender">
           <img class="chats__messagePhoto" src={{messagePhoto}} alt="картинка в сообщении">
           <div class="chats__senderMessageTime">11:56</div>
-        </div>
-        <div class="chats__message chats__message_owner">
+        </article>
+        <article class="chats__message chats__message_owner">
           <p>Круто!</p>
           <div class="chats__ownerMessageTime">12:00</div>
-        </div>
+        </article>
 
         <div class="chats__messageTime">19 июня</div>
-        <div class="chats__message chats__message_sender">
+        <article class="chats__message chats__message_sender">
           <p>Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила
             Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью
             500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с
@@ -55,12 +55,12 @@
             Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не
             попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.</p>
           <div class="chats__senderMessageTime">11:56</div>
-        </div>
-        <div class="chats__message chats__message_sender">
+        </article>
+        <article class="chats__message chats__message_sender">
           <img class="chats__messagePhoto" src={{messagePhoto}} alt="картинка в сообщении">
           <div class="chats__senderMessageTime">11:56</div>
-        </div>
-        <div class="chats__message chats__message_owner">
+        </article>
+        <article class="chats__message chats__message_owner">
           <p>Круто!</p>
 
           <div class="chats__ownerMessageTime">
@@ -76,12 +76,12 @@
             </div>
             <span>12:00</span>
           </div>
-        </div>
-      </div>
+        </article>
+      </section>
 
       <form class="chats__messageForm">
         <textarea class="chats__messageArea" placeholder="Сообщение"></textarea>
-        <button type="button" class="chats__messageBtn"></button>
+        <button type="submit" class="chats__messageBtn"></button>
       </form>
     </div>
     {{/if}}
@@ -93,4 +93,4 @@
     {{#if showModalRemoveUser}}
     {{> RemoveUserModal }}
   {{/if}}
-</div>
+</main>

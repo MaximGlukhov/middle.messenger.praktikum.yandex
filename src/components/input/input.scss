@@ -12,6 +12,22 @@
   .input[type="password"] {
     color: $color-error;
   }
+
+  .input[type="file"] {
+    display: none;
+  }
+
+  .input[type="file"] + .inputPlaceholder {
+    display: block;
+    position: static;
+    pointer-events: visible;
+    cursor: pointer;
+    color: $color-blue;
+    font-size: 12px;
+    line-height: 1.2;
+    text-align: center;
+    transform: none;
+  }
 }
 
 .inputPlaceholder {

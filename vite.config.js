@@ -1,11 +1,15 @@
 import { defineConfig } from "vite";
-import path from 'path'
+import path from "path";
 
 export default defineConfig({
   build: {
     outDir: "dist",
   },
   server: {
+    port: 3000,
+    host: true,
+  },
+  preview: {
     port: 3000,
     host: true,
   },
