@@ -1,49 +1,50 @@
-<form class="container profile">
-  <div class="profile__container">
-    <div class="profile__userCard">
-      <div class="profile__avatar">
-        <img src={{avatar}} alt="аватар пользователя">
-        <p class="profile__avatarHidden">Поменять
-          аватар</p>
+<main>
+  <form class="container profile">
+    <div class="profile__container">
+      <div class="profile__userCard">
+        <div class="profile__avatar">
+          <img src={{avatar}} alt="аватар пользователя">
+          <p class="profile__avatarHidden">Поменять
+            аватар</p>
+        </div>
+        <p class="profile__name">{{name}}</p>
       </div>
-      <p class="profile__name">{{name}}</p>
+
+      <div class="profile__data">
+        <div class="profile__row">
+          <p>Почта</p>
+          {{> Input name="mail" type="text" }}
+        </div>
+        <div class="profile__row">
+          <p>Логин</p>
+          {{> Input name="login" type="text" }}
+        </div>
+        <div class="profile__row">
+          <p>Имя</p>
+          {{> Input name="name" type="text" }}
+        </div>
+        <div class="profile__row">
+          <p>Фамилия</p>
+          {{> Input name="lastname" type="text" }}
+        </div>
+        <div class="profile__row">
+          <p>Имя в чате</p>
+          {{> Input name="nickname" type="text" }}
+        </div>
+        <div class="profile__row">
+          <p>Телефон</p>
+          {{> Input name="phone" type="text" }}
+        </div>
+      </div>
+
+      {{> Button type="submit" class="profile__saveBtn" title="Сохранить" buttonStyle="primary"}}
+
     </div>
 
-    <div class="profile__data">
-      <div class="profile__row">
-        <p>Почта</p>
-        {{> Input typeInput="text" }}
-      </div>
-      <div class="profile__row">
-        <p>Логин</p>
-        {{> Input typeInput="text" }}
-      </div>
-      <div class="profile__row">
-        <p>Имя</p>
-        {{> Input typeInput="text" }}
-      </div>
-      <div class="profile__row">
-        <p>Имя</p>
-        {{> Input typeInput="text" }}
-      </div>
-      <div class="profile__row">
-        <p>Имя в чате</p>
-        {{> Input typeInput="text" }}
-      </div>
-      <div class="profile__row">
-        <p>Телефон</p>
-        {{> Input typeInput="text" }}
-      </div>
-    </div>
-
-
-    {{> Button class="profile__saveBtn" title="Сохранить" type="primary"}}
-
-  </div>
-
-  {{#if showModalAddNewAvtar}}
+    {{#if showModalAddNewAvtar}}
     {{> AddNewAvatarModal status="Загрузите файл" }}
-  {{/if}}
+    {{/if}}
 
-  <button class="profile__backBtn"></button>
-</form>
+    <button class="profile__backBtn"></button>
+  </form>
+</main>

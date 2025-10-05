@@ -32,7 +32,7 @@
     bottom: 0;
     text-align: center;
     margin: auto;
-    color: #fff;
+    color: $color-white;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     transition: all 0.2s linear;
@@ -57,7 +57,7 @@
     padding: 10px 0;
 
     &:not(:last-child) {
-      border-bottom: 1px solid rgba(234, 234, 234, 1);
+      border-bottom: 1px solid $color-light-grey;
     }
 
     .inputLabel {
