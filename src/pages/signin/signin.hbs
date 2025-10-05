@@ -2,16 +2,16 @@
   <form class="login__form">
     <div class="login__group">
       <h1 class="title">Регистрация</h1>
-      {{> Input name="mail" type="text" title="Почта" }}
+      {{> Input name="email" type="text" title="Почта" }}
       {{> Input name="login" type="text" title="Логин" }}
-      {{> Input name="name" type="text" title="Имя" }}
-      {{> Input name="lastname" type="text" title="Фамилия" }}
+      {{> Input name="first_name" type="text" title="Имя" }}
+      {{> Input name="second_name" type="text" title="Фамилия" }}
       {{> Input name="phone" type="text" title="Телефон" }}
       {{> Input name="password" error="error" type="password" title="Пароль" }}
-      {{> Input name="repeatpassword" error="error" errorText="Пароли не совпадают" type="password" title="Пароль (ещё раз)" }}
+      {{> Input name="password" error="error" errorText="Пароли не совпадают" type="password" title="Пароль (ещё раз)" }}
     </div>
     <div class="login__group">
-      {{> Button type="submit" title="Авторизоваться" buttonStyle="primary" }}
+      {{> Button type="submit" title="Зарегистрироваться" buttonStyle="primary" }}
       {{> Button title="Нет аккаунта?" buttonStyle="text"}}
     </div>
   </form>
