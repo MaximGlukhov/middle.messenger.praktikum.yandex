@@ -1,1 +1,1 @@
-export { default as AddUserModal } from './addUserModal.hbs?raw';
+export { default as AddUserModal } from "./addUserModal.hbs?raw";
