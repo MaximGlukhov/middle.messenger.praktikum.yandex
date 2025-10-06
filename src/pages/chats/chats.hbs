@@ -1,0 +1,96 @@
+<main class="chats">
+  <div class="chats__bar">
+    <a href="#" class="chats__profileLink">
+      Профиль
+    </a>
+    <input name="search" class="chats__search" type="text" placeholder="Поиск" />
+    <ul class="chats__list">
+      {{#each users}}
+      {{> User}}
+      {{/each}}
+    </ul>
+  </div>
+  <div class="chats__messages">
+    {{#if closedChat}}
+    <p class="chats__empty">Выберите чат чтобы отправить сообщение</p>
+    {{else}}
+
+    <div class="chats__notEmpty">
+      <header class="chats__currentUser">
+        <img class="chats__currentUserAvatar" src={{currentUserAvatar}} alt="аватар">
+        <p class="chats__currentUserName"><strong>{{currentUserName}}</strong></p>
+        <button class="chats__currentUserBtn" aria-label="меню пользователя" />
+      </header>
+
+      <section class="chats__history">
+        <div class="chats__messageTime">19 июня</div>
+        <article class="chats__message chats__message_sender">
+          <p>Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила
+            Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью
+            500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с
+            собой забрали только кассеты с пленкой.
+          </p>
+          <p>
+            Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не
+            попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.</p>
+          <div class="chats__senderMessageTime">11:56</div>
+        </article>
+        <article class="chats__message chats__message_sender">
+          <img class="chats__messagePhoto" src={{messagePhoto}} alt="картинка в сообщении">
+          <div class="chats__senderMessageTime">11:56</div>
+        </article>
+        <article class="chats__message chats__message_owner">
+          <p>Круто!</p>
+          <div class="chats__ownerMessageTime">12:00</div>
+        </article>
+
+        <div class="chats__messageTime">19 июня</div>
+        <article class="chats__message chats__message_sender">
+          <p>Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила
+            Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью
+            500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с
+            собой забрали только кассеты с пленкой.
+          </p>
+          <p>
+            Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не
+            попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.</p>
+          <div class="chats__senderMessageTime">11:56</div>
+        </article>
+        <article class="chats__message chats__message_sender">
+          <img class="chats__messagePhoto" src={{messagePhoto}} alt="картинка в сообщении">
+          <div class="chats__senderMessageTime">11:56</div>
+        </article>
+        <article class="chats__message chats__message_owner">
+          <p>Круто!</p>
+
+          <div class="chats__ownerMessageTime">
+            <div class="chats__message_ownerCheck">
+              <svg width="10" height="5" viewBox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line y1="-0.5" x2="3.765" y2="-0.5"
+                  transform="matrix(0.705933 0.708278 -0.705933 0.708278 0.700195 2.33313)" stroke="currentColor" />
+                <line y1="-0.5" x2="5.6475" y2="-0.5"
+                  transform="matrix(0.705933 -0.708278 0.705933 0.708278 3.35828 5.00006)" stroke="currentColor" />
+                <line y1="-0.5" x2="5.6475" y2="-0.5"
+                  transform="matrix(0.705933 -0.708278 0.705933 0.708278 6.01587 5.00006)" stroke="currentColor" />
+              </svg>
+            </div>
+            <span>12:00</span>
+          </div>
+        </article>
+      </section>
+
+      <form class="chats__messageForm">
+        <textarea name="message" class="chats__messageArea" placeholder="Сообщение"></textarea>
+        <button type="submit" class="chats__messageBtn"></button>
+      </form>
+    </div>
+    {{/if}}
+  </div>
+
+  {{#if showModalAddUser}}
+    {{> AddUserModal }}
+  {{/if}}
+    {{#if showModalRemoveUser}}
+    {{> RemoveUserModal }}
+  {{/if}}
+</main>
