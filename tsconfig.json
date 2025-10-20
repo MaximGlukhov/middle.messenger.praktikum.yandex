@@ -18,8 +18,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "noImplicitAny": true,
-    "sourceMap": true,
-    "strictNullChecks": true
+    "outDir": "dist",
+    "declaration": false,
+    "strictNullChecks": true,
+    "sourceMap": true
   },
   "include": ["src"]
 }
