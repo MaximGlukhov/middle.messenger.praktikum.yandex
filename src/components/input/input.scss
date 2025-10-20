@@ -3,16 +3,6 @@
   position: relative;
   margin-bottom: 16px;
 
-  &_error {
-    .inputError {
-      opacity: 1;
-    }
-  }
-
-  .input[type='file'] {
-    display: none;
-  }
-
   .inputPlaceholder {
     pointer-events: none;
     position: absolute;
@@ -22,16 +12,38 @@
     transition: font-size 0.2s, transform 0.2s;
   }
 
-  .input[type='file'] + .inputPlaceholder {
-    display: block;
-    position: static;
-    pointer-events: visible;
-    cursor: pointer;
-    color: $color-blue;
-    font-size: 12px;
-    line-height: 1.2;
-    text-align: center;
-    transform: none;
+  .input {
+    width: 100%;
+    border-bottom: 1px solid $color-blue;
+    padding: 14px 0 7px;
+
+    &:focus + .inputPlaceholder,
+    &:not(:placeholder-shown) + .inputPlaceholder {
+      font-size: 9px;
+      transform: translateY(-20px);
+    }
+  }
+
+  .input[type='file'] {
+    display: none;
+
+    + .inputPlaceholder {
+      display: block;
+      position: static;
+      pointer-events: visible;
+      cursor: pointer;
+      color: $color-blue;
+      font-size: 12px;
+      line-height: 1.2;
+      text-align: center;
+      transform: none;
+    }
+  }
+
+  &_error {
+    .inputError {
+      opacity: 1;
+    }
   }
 }
 
@@ -44,16 +56,4 @@
   font-size: 8px;
   font-weight: 400;
   transition: opacity 0.2s;
-}
-
-.input {
-  width: 100%;
-  border-bottom: 1px solid $color-blue;
-  padding: 14px 0 7px;
-
-  &:focus + .inputPlaceholder,
-  &:not(:placeholder-shown) + .inputPlaceholder {
-    font-size: 9px;
-    transform: translateY(-20px);
-  }
 }
