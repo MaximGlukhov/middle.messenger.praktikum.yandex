@@ -1,1 +1,1 @@
-export { default as RemoveUserModal } from './removeUserModal';
+export { default as RemoveUserModal } from "./removeUserModal.hbs?raw";

@@ -1,3 +1,2 @@
-import './addNewAvatarBody.scss';
-
-export { default as AddNewAvatarModal } from './addNewAvatarModal';
+import "./addNewAvaatarBody.scss";
+export { default as AddNewAvatarModal } from "./addNewAvatartModal.hbs?raw";
