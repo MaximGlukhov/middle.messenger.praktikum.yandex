@@ -1,3 +1,10 @@
 {
+  "rules": {
+    "at-rule-no-deprecated": true,
+    "declaration-property-value-keyword-no-deprecated": true,
+    "media-type-no-deprecated": true,
+    "property-no-deprecated": true,
+    "no-descending-specificity": true
+  },
   "ignoreFiles": ["dist/*"]
 }
