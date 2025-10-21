@@ -217,7 +217,7 @@ Object.entries(Components).forEach(([name, template]) => {
 function navigate(page: keyof typeof pages) {
   const [source, context] = pages[page];
   if (typeof source === 'function') {
-    renderDOM(new source({}));
+    renderDOM(new source((context ?? {}) as any));
     return;
   }
 

@@ -118,7 +118,7 @@ export default class Block {
     return true;
   }
 
-  setProps = (nextProps: any) => {
+  setProps = (nextProps: Record<string, any>) => {
     if (!nextProps) {
       return;
     }

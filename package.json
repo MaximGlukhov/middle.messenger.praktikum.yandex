@@ -6,7 +6,12 @@
   "scripts": {
     "start": "vite build && vite preview",
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "lint": "eslint . --ext .js,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
+    "stylelint": "stylelint \"src/**/*.{css,scss}\"",
+    "stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
+    "tsc": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/handlebars": "^4.0.40",
@@ -16,6 +21,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "sass": "^1.93.2",
     "stylelint": "^16.25.0",
+    "stylelint-config-standard-scss": "^16.0.0",
     "stylelint-scss": "^6.12.1",
     "typescript": "~5.8.3",
     "vite": "^7.1.7"

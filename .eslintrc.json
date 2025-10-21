@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": "airbnb-base",
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {
@@ -25,6 +25,7 @@
     "operator-linebreak": "off",
     "object-curly-newline": "off",
     "arrow-body-style": "off",
+    "no-plusplus": "off",
     "max-len": [2, 120]
   }
 }
