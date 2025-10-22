@@ -8,42 +8,39 @@ enum METHODS {
 
 type Options = {
   method: METHODS;
-  data?: any;
-  headers?: any;
+  data?: Document | XMLHttpRequestBodyInit;
+  headers?: Record<string, string>;
   timeout?: number;
 };
 
 type OptionsWithoutMethod = Omit<Options, 'method'>;
 
-function queryStringify(data: Record<string, any>) {
-  if (typeof data !== 'object') {
-    throw new Error('Data must be object');
-  }
-
-  const keys = Object.keys(data);
-  return keys.reduce((result, key, index) => {
-    return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
-  }, '?');
+function queryStringify(data: Document | XMLHttpRequestBodyInit): string {
+  const entries = Object.entries(data);
+  if (entries.length === 0) return '';
+  return `?${entries
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+    .join('&')}`;
 }
 
 export class HTTPTransport {
   get = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
+    return this.request(url, { ...options, method: METHODS.GET });
   };
 
   post = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+    return this.request(url, { ...options, method: METHODS.POST });
   };
 
   put = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+    return this.request(url, { ...options, method: METHODS.PUT });
   };
 
   delete = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+    return this.request(url, { ...options, method: METHODS.DELETE });
   };
 
-  request = (url: string, options: Options = { method: METHODS.GET }, timeout = 5000) => {
+  request = (url: string, options: Options = { method: METHODS.GET }) => {
     const { headers = {}, method, data } = options;
 
     return new Promise((resolve, reject) => {
@@ -67,7 +64,10 @@ export class HTTPTransport {
       xhr.onabort = reject;
       xhr.onerror = reject;
 
-      xhr.timeout = timeout;
+      if (options.timeout) {
+        xhr.timeout = options.timeout;
+      }
+
       xhr.ontimeout = reject;
 
       if (isGet || !data) {

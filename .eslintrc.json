@@ -26,6 +26,8 @@
     "object-curly-newline": "off",
     "arrow-body-style": "off",
     "no-plusplus": "off",
+    "no-confusing-arrow": "off",
+    "implicit-arrow-linebreak": "off",
     "max-len": [2, 120]
   }
 }

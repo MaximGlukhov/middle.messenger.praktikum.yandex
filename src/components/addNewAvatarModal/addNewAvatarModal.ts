@@ -2,8 +2,12 @@ import Block from '../../core/block';
 import { Modal } from '../modal';
 import { ModalBody } from './modalBody';
 
+interface IAddNewAvatarModalProps {
+  onOk: () => void;
+}
+
 export default class AddNewAvatarModal extends Block {
-  constructor(props: any) {
+  constructor(props: IAddNewAvatarModalProps) {
     super('div', {
       ...props,
       Modal: new Modal({

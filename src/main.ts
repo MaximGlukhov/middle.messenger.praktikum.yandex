@@ -7,6 +7,13 @@ import avatarDefault from './assets/avatar-default.svg';
 import messagePhoto from './assets/example-photo.jpg';
 import renderDOM from './core/renderDom';
 
+import type { ILoginProps } from './pages/login/login';
+import type { ISigninProps } from './pages/signin/signin';
+import type { IChatsProps } from './pages/chats/chats';
+import type { IPropfileProps } from './pages/profile/profile';
+import type { IProfileEditProps } from './pages/profileEdit/profileEdit';
+import type { IPropfileEditPasswordsProps } from './pages/profileEditPassword/proileEditPassword';
+
 import './styles/styles.scss';
 
 const pages = {
@@ -217,7 +224,16 @@ Object.entries(Components).forEach(([name, template]) => {
 function navigate(page: keyof typeof pages) {
   const [source, context] = pages[page];
   if (typeof source === 'function') {
-    renderDOM(new source((context ?? {}) as any));
+    renderDOM(
+      new source(
+        {} as ILoginProps &
+          ISigninProps &
+          IChatsProps &
+          IPropfileProps &
+          IProfileEditProps &
+          IPropfileEditPasswordsProps
+      )
+    );
     return;
   }
 

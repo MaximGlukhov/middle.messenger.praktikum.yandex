@@ -11,9 +11,15 @@ interface IInputLabelProps {
   onBlur?: (e: FocusEvent) => void;
   onFocus?: (e: FocusEvent) => void;
   onInput?: (e: InputEvent) => void;
+  [key: string]: unknown;
 }
 
-export default class InputLabel extends Block {
+interface IInputLabelChildren {
+  Input: Block;
+  [key: string]: unknown;
+}
+
+export default class InputLabel extends Block<IInputLabelProps, IInputLabelChildren> {
   constructor(props: IInputLabelProps) {
     super('label', {
       ...props,
@@ -33,7 +39,7 @@ export default class InputLabel extends Block {
   }
 
   public value() {
-    return this.children.Input.getContent().value;
+    return (this.children.Input.getContent() as HTMLInputElement).value;
   }
 
   public render(): string {

@@ -1,12 +1,12 @@
-export function identity(value: any) {
+export function identity(value: unknown) {
   return value;
 }
 
-export function last(arr: any[]) {
+export function last(arr: unknown[]) {
   return arr[arr.length - 1];
 }
 
-export function first(arr: any[]) {
+export function first(arr: unknown[]) {
   return arr[0];
 }
 
@@ -53,7 +53,7 @@ export function rangeRight(start: number, end: number, step: number) {
   return range(start, end, step, true);
 }
 
-export function isEmpty(value: any) {
+export function isEmpty(value: unknown) {
   if (
     typeof value === 'number' ||
     value === '' ||

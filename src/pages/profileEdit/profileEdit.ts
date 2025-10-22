@@ -2,7 +2,7 @@ import Block from '../../core/block';
 import { AddNewAvatarModal, Button, Input } from '../../components';
 import { UserCard } from '../../components/userCard';
 
-interface IPropfileEditProps {
+export interface IProfileEditProps {
   formState: {
     email: string;
     login: string;
@@ -16,13 +16,26 @@ interface IPropfileEditProps {
     login: string;
     firstName: string;
     secondName: string;
+    displayName: string;
     phone: string;
   };
   showAddNewAvatarModal: boolean;
+  [key: string]: unknown;
 }
 
-export default class ProfileEditPage extends Block {
-  constructor(props: IPropfileEditProps) {
+interface IProfileEditChildren {
+  [key: string]: unknown;
+  UserCard: Block;
+  EmailInput: Block;
+  LoginInput: Block;
+  NameInput: Block;
+  SecondNameInput: Block;
+  PhoneInput: Block;
+  NickNameInput: Block;
+}
+
+export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEditChildren> {
+  constructor(props: IProfileEditProps) {
     super('main', {
       ...props,
       formState: {
@@ -44,11 +57,11 @@ export default class ProfileEditPage extends Block {
       showAddNewAvatarModal: false,
       UserCard: new UserCard({
         onClick: () => {
-          this.setProps({ showAddNewAvatarModal: true });
+          this.setProps({ ...this.props, showAddNewAvatarModal: true });
         },
       }),
       AddNewAvatarModal: new AddNewAvatarModal({
-        onOk: () => this.setProps({ showAddNewAvatarModal: false }),
+        onOk: () => this.setProps({ ...this.props, showAddNewAvatarModal: false }),
       }),
 
       EmailInput: new Input({
@@ -66,6 +79,7 @@ export default class ProfileEditPage extends Block {
           }
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               email: value,
@@ -106,6 +120,7 @@ export default class ProfileEditPage extends Block {
           });
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               login: value,
@@ -137,6 +152,7 @@ export default class ProfileEditPage extends Block {
           });
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               firstName: value,
@@ -168,6 +184,7 @@ export default class ProfileEditPage extends Block {
           });
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               secondName: value,
@@ -189,6 +206,7 @@ export default class ProfileEditPage extends Block {
           const { value } = e.target as HTMLInputElement;
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               displayName: value,
@@ -220,6 +238,7 @@ export default class ProfileEditPage extends Block {
           });
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               phone: value,
@@ -250,7 +269,7 @@ export default class ProfileEditPage extends Block {
           } else if (hasEmpty) {
             if (!email) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   email: 'Введите email',
@@ -262,7 +281,7 @@ export default class ProfileEditPage extends Block {
             }
             if (!login) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   login: 'Введите логин',
@@ -274,7 +293,7 @@ export default class ProfileEditPage extends Block {
             }
             if (!firstName) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   firstName: 'Введите имя',
@@ -286,7 +305,7 @@ export default class ProfileEditPage extends Block {
             }
             if (!secondName) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   secondName: 'Введите фамилию',
@@ -298,7 +317,7 @@ export default class ProfileEditPage extends Block {
             }
             if (!displayName) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   displayName: 'Введите никнейм',
@@ -310,7 +329,7 @@ export default class ProfileEditPage extends Block {
             }
             if (!phone) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   phone: 'Введите фамилию',

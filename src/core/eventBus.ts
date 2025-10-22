@@ -19,7 +19,7 @@ export default class EventBus<E extends string> {
     this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
   }
 
-  emit<T extends any[] = []>(event: E, ...args: T) {
+  emit<T extends unknown[] = []>(event: E, ...args: T) {
     if (!this.listeners[event]) {
       return;
       // throw new Error(`Нет события: ${event}`);

@@ -2,8 +2,12 @@ import Block from '../../core/block';
 import { Modal } from '../modal';
 import { ModalBody } from './modalBody';
 
+interface IAddUserModal {
+  onOk: () => void;
+}
+
 export default class AddUserModal extends Block {
-  constructor(props: any) {
+  constructor(props: IAddUserModal) {
     super('div', {
       ...props,
       Modal: new Modal({

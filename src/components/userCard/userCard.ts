@@ -1,7 +1,12 @@
 import Block from '../../core/block';
 
+interface IUserCard {
+  avatar?: string;
+  onClick: () => void;
+}
+
 export default class UserCard extends Block {
-  constructor(props: any) {
+  constructor(props: IUserCard) {
     super('div', {
       ...props,
       className: 'userCard',
