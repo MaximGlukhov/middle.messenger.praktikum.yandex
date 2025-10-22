@@ -5,7 +5,7 @@ interface IModalProps {
   title: string;
   labelOk: string;
   onOk: () => void;
-  Body: any;
+  Body: object;
 }
 
 export default class Modal extends Block {

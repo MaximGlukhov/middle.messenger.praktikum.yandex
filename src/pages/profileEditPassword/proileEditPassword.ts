@@ -1,8 +1,9 @@
 import Block from '../../core/block';
 import { AddNewAvatarModal, Button, Input } from '../../components';
 import { UserCard } from '../../components/userCard';
+import type InputLabel from '../../components/input/inputLabel';
 
-interface IPropfileEditPasswordsProps {
+export interface IPropfileEditPasswordsProps {
   formState: {
     oldPassword: string;
     newPassword: string;
@@ -14,9 +15,21 @@ interface IPropfileEditPasswordsProps {
     repeatNewPassword: string;
   };
   showAddNewAvatarModal: boolean;
+  [key: string]: unknown;
 }
 
-export default class ProfileEditPasswordPage extends Block {
+interface IPropfileEditPasswordsChildren {
+  [key: string]: unknown;
+  UserCard: Block;
+  InputOldPassword: Block;
+  InputPassword: Block;
+  InputRepeatPassword: Block;
+}
+
+export default class ProfileEditPasswordPage extends Block<
+  IPropfileEditPasswordsProps,
+  IPropfileEditPasswordsChildren
+> {
   constructor(props: IPropfileEditPasswordsProps) {
     super('main', {
       ...props,
@@ -34,11 +47,11 @@ export default class ProfileEditPasswordPage extends Block {
       showAddNewAvatarModal: false,
       UserCard: new UserCard({
         onClick: () => {
-          this.setProps({ showAddNewAvatarModal: true });
+          this.setProps({ ...this.props, showAddNewAvatarModal: true });
         },
       }),
       AddNewAvatarModal: new AddNewAvatarModal({
-        onOk: () => this.setProps({ showAddNewAvatarModal: false }),
+        onOk: () => this.setProps({ ...this.props, showAddNewAvatarModal: false }),
       }),
 
       InputOldPassword: new Input({
@@ -48,7 +61,7 @@ export default class ProfileEditPasswordPage extends Block {
 
         onChange: (e: Event) => {
           const { value } = e.target as HTMLInputElement;
-          const regPassword = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/;
+          const regPassword = /^(?=.*[A-ZА-Я])(?=.*\d).+$/;
           let errorText = '';
 
           if (value.length < 8 || value.length > 40) {
@@ -64,6 +77,7 @@ export default class ProfileEditPasswordPage extends Block {
           });
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               oldPassword: value,
@@ -82,7 +96,7 @@ export default class ProfileEditPasswordPage extends Block {
         className: 'profileEdit__input',
         onChange: (e: Event) => {
           const { value } = e.target as HTMLInputElement;
-          const regPassword = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/;
+          const regPassword = /^(?=.*[A-ZА-Я])(?=.*\d).+$/;
           let errorText = '';
 
           if (value.length < 8 || value.length > 40) {
@@ -98,6 +112,7 @@ export default class ProfileEditPasswordPage extends Block {
           });
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               newPassword: value,
@@ -118,7 +133,9 @@ export default class ProfileEditPasswordPage extends Block {
           const { value } = e.target as HTMLInputElement;
           let errorText = '';
 
-          if (value !== this.children.InputPassword.value()) {
+          const inputPassword = this.children.InputPassword as InputLabel;
+
+          if (value !== inputPassword.value()) {
             errorText = 'Пароли не совпадают';
           }
 
@@ -127,6 +144,7 @@ export default class ProfileEditPasswordPage extends Block {
           });
 
           this.setProps({
+            ...this.props,
             formState: {
               ...this.props.formState,
               repeatNewPassword: value,
@@ -157,6 +175,7 @@ export default class ProfileEditPasswordPage extends Block {
           } else if (hasEmpty) {
             if (!oldPassword) {
               this.setProps({
+                ...this.props,
                 ...this.props.formState,
                 errors: {
                   ...this.props.errors,
@@ -170,6 +189,7 @@ export default class ProfileEditPasswordPage extends Block {
             }
             if (!newPassword) {
               this.setProps({
+                ...this.props,
                 ...this.props.formState,
                 errors: {
                   ...this.props.errors,
@@ -183,6 +203,7 @@ export default class ProfileEditPasswordPage extends Block {
             }
             if (!repeatNewPassword) {
               this.setProps({
+                ...this.props,
                 ...this.props.formState,
                 errors: {
                   ...this.props.errors,

@@ -5,13 +5,14 @@ interface IChatsFields {
   message: string;
 }
 
-interface IChatsProps {
+export interface IChatsProps {
   formState: IChatsFields;
   errors: IChatsFields;
   showModal: boolean;
+  [key: string]: unknown;
 }
 
-export default class ChatsPage extends Block {
+export default class ChatsPage extends Block<IChatsProps> {
   constructor(props: IChatsProps) {
     super('main', {
       ...props,
@@ -33,12 +34,9 @@ export default class ChatsPage extends Block {
           const { value } = e.target as HTMLInputElement;
 
           this.setProps({
+            ...this.props,
             formState: {
-              ...this.props.formState,
               message: value,
-            },
-            errors: {
-              ...this.props.errors,
             },
           });
         },
@@ -49,7 +47,7 @@ export default class ChatsPage extends Block {
         className: 'chats__addUserBtn',
         tooltip: 'Добавить пользователя',
         onClick: () => {
-          this.setProps({ showAddUserModal: true });
+          this.setProps({ ...this.props, showAddUserModal: true });
         },
       }),
 
@@ -58,16 +56,16 @@ export default class ChatsPage extends Block {
         className: 'chats__removeUserBtn',
         tooltip: 'Удалить пользователя',
         onClick: () => {
-          this.setProps({ showRemoveUserModal: true });
+          this.setProps({ ...this.props, showRemoveUserModal: true });
         },
       }),
 
       AddUserModal: new AddUserModal({
-        onOk: () => this.setProps({ showAddUserModal: false }),
+        onOk: () => this.setProps({ ...this.props, showAddUserModal: false }),
       }),
 
       RemoveUserModal: new RemoveUserModal({
-        onOk: () => this.setProps({ showRemoveUserModal: false }),
+        onOk: () => this.setProps({ ...this.props, showRemoveUserModal: false }),
       }),
 
       SubmitMessageBtn: new Button({
@@ -80,7 +78,7 @@ export default class ChatsPage extends Block {
             console.log(this.props.formState);
           } else {
             this.setProps({
-              ...this.props.formState,
+              ...this.props,
               errors: {
                 ...this.props.errors,
                 message: 'Сообщение пустое',

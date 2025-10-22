@@ -2,8 +2,12 @@ import Block from '../../core/block';
 import { Modal } from '../modal';
 import { ModalBody } from './modalBody';
 
+interface IRemoveUserModalProps {
+  onOk: () => void;
+}
+
 export default class RemoveUserModal extends Block {
-  constructor(props: any) {
+  constructor(props: IRemoveUserModalProps) {
     super('div', {
       ...props,
       Modal: new Modal({

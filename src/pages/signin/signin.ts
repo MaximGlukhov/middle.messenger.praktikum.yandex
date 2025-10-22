@@ -1,7 +1,8 @@
 import { Button, Input } from '../../components';
+import type InputLabel from '../../components/input/inputLabel';
 import Block from '../../core/block';
 
-interface ILoginFields {
+interface ISigninFields {
   email: string;
   login: string;
   firstName: string;
@@ -11,13 +12,25 @@ interface ILoginFields {
   repeatPassword: string;
 }
 
-interface ILoginProps {
-  formState: ILoginFields;
-  errors: ILoginFields;
+export interface ISigninProps {
+  formState: ISigninFields;
+  errors: ISigninFields;
+  [key: string]: unknown;
 }
 
-export default class SigninPage extends Block {
-  constructor(props: ILoginProps) {
+interface ISigninChildren {
+  [key: string]: unknown;
+  InputPassword: Block;
+  InputEmail: Block;
+  InputLogin: Block;
+  InputName: Block;
+  InputSecondName: Block;
+  InputPhone: Block;
+  InputRepeatPassword: Block;
+}
+
+export default class SigninPage extends Block<ISigninProps, ISigninChildren> {
+  constructor(props: ISigninProps) {
     super('main', {
       ...props,
       formState: {
@@ -202,7 +215,7 @@ export default class SigninPage extends Block {
         type: 'password',
         onChange: (e: Event) => {
           const { value } = e.target as HTMLInputElement;
-          const regPassword = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/;
+          const regPassword = /^(?=.*[A-ZА-Я])(?=.*\d).+$/;
           let errorText = '';
 
           if (value.length < 8 || value.length > 40) {
@@ -238,7 +251,8 @@ export default class SigninPage extends Block {
           const { value } = e.target as HTMLInputElement;
           let errorText = '';
 
-          if (value !== this.children.InputPassword.value()) {
+          const inputPassword = this.children.InputPassword as InputLabel;
+          if (value !== inputPassword.value()) {
             errorText = 'Пароли не совпадают';
           }
 
@@ -275,7 +289,7 @@ export default class SigninPage extends Block {
           } else if (hasEmpty) {
             if (!email) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   email: 'Введите email',
@@ -287,7 +301,7 @@ export default class SigninPage extends Block {
             }
             if (!login) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   login: 'Введите логин',
@@ -299,7 +313,7 @@ export default class SigninPage extends Block {
             }
             if (!firstName) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   firstName: 'Введите имя',
@@ -311,7 +325,7 @@ export default class SigninPage extends Block {
             }
             if (!secondName) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   secondName: 'Введите фамилию',
@@ -323,7 +337,7 @@ export default class SigninPage extends Block {
             }
             if (!phone) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   phone: 'Введите фамилию',
@@ -335,7 +349,7 @@ export default class SigninPage extends Block {
             }
             if (!password) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   password: 'Введите пароль',
@@ -348,7 +362,7 @@ export default class SigninPage extends Block {
             }
             if (!repeatPassword) {
               this.setProps({
-                ...this.props.formState,
+                ...this.props,
                 errors: {
                   ...this.props.errors,
                   repeatPassword: 'Повторите пароль',

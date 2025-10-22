@@ -6,12 +6,19 @@ interface ILoginFields {
   password: string;
 }
 
-interface ILoginProps {
+export interface ILoginProps {
   formState: ILoginFields;
   errors: ILoginFields;
+  [key: string]: unknown;
 }
 
-export default class LoginPage extends Block {
+interface ILoginChildren {
+  InputLogin: Block;
+  InputPassword: Block;
+  [key: string]: unknown;
+}
+
+export default class LoginPage extends Block<ILoginProps, ILoginChildren> {
   constructor(props: ILoginProps) {
     super('main', {
       ...props,
@@ -66,7 +73,7 @@ export default class LoginPage extends Block {
         type: 'password',
         onChange: (e: Event) => {
           const { value } = e.target as HTMLInputElement;
-          const regPassword = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/;
+          const regPassword = /^(?=.*[A-ZА-Я])(?=.*\d).+$/;
           let errorText = '';
 
           if (value.length < 8 || value.length > 40) {
@@ -107,11 +114,11 @@ export default class LoginPage extends Block {
           } else if (login === '' || password === '') {
             if (login === '') {
               this.setProps({
-                ...this.props.formState,
                 errors: {
                   ...this.props.errors,
                   login: 'Введите логин',
                 },
+                formState: this.props.formState,
               });
               this.children.InputLogin.setProps({
                 errorText: 'Введите логин',
@@ -119,7 +126,7 @@ export default class LoginPage extends Block {
             }
             if (password === '') {
               this.setProps({
-                ...this.props.formState,
+                formState: this.props.formState,
                 errors: {
                   ...this.props.errors,
                   password: 'Введите пароль',

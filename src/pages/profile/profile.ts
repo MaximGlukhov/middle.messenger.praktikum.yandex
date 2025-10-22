@@ -2,7 +2,7 @@ import Block from '../../core/block';
 import { AddNewAvatarModal, Button, Input } from '../../components';
 import { UserCard } from '../../components/userCard';
 
-interface IPropfileProps {
+export interface IPropfileProps {
   formState: {
     email: string;
     login: string;
