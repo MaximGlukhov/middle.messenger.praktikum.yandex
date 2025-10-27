@@ -1,2 +1,3 @@
-import "./nav.scss";
-export { default as NavPage } from "./nav.hbs?raw";
+import './nav.scss';
+
+export { default as NavPage } from './nav.hbs?raw';

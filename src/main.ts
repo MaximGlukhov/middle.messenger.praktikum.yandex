@@ -1,12 +1,20 @@
-import Handlebars from "handlebars";
+import Handlebars from 'handlebars';
 
-import * as Components from "./components";
-import * as Pages from "./pages";
+import * as Components from './components';
+import * as Pages from './pages';
 
-import avatarDefault from "./assets/avatar-default.svg";
-import messagePhoto from "./assets/example-photo.jpg";
+import avatarDefault from './assets/avatar-default.svg';
+import messagePhoto from './assets/example-photo.jpg';
+import renderDOM from './core/renderDom';
 
-import "./styles/styles.scss";
+import type { ILoginProps } from './pages/login/login';
+import type { ISigninProps } from './pages/signin/signin';
+import type { IChatsProps } from './pages/chats/chats';
+import type { IPropfileProps } from './pages/profile/profile';
+import type { IProfileEditProps } from './pages/profileEdit/profileEdit';
+import type { IPropfileEditPasswordsProps } from './pages/profileEditPassword/proileEditPassword';
+
+import './styles/styles.scss';
 
 const pages = {
   nav: [Pages.NavPage],
@@ -19,187 +27,180 @@ const pages = {
     {
       users: [
         {
-          name: "Андрей",
+          name: 'Андрей',
           avatar: avatarDefault,
-          message: "Изображение",
-          time: "10:49",
-          countMessage: "2",
+          message: 'Изображение',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Киноклуб",
+          name: 'Киноклуб',
           avatar: avatarDefault,
-          message: "стикер",
-          userMessage: "Вы: ",
+          message: 'стикер',
+          userMessage: 'Вы: ',
           active: true,
-          time: "10:49",
-          countMessage: "2",
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Илья",
+          name: 'Илья',
           avatar: avatarDefault,
-          message:
-            "И Human Interface Guidelines и Material Design рекомендуют...",
-          time: "10:49",
-          countMessage: "2",
+          message: 'И Human Interface Guidelines и Material Design рекомендуют...',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Андрей",
+          name: 'Андрей',
           avatar: avatarDefault,
-          message: "Изображение",
-          time: "10:49",
-          countMessage: "2",
+          message: 'Изображение',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Киноклуб",
+          name: 'Киноклуб',
           avatar: avatarDefault,
-          message: "стикер",
-          userMessage: "Вы: ",
-          time: "10:49",
-          countMessage: "2",
+          message: 'стикер',
+          userMessage: 'Вы: ',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Илья",
+          name: 'Илья',
           avatar: avatarDefault,
-          message:
-            "И Human Interface Guidelines и Material Design рекомендуют...",
-          time: "10:49",
-          countMessage: "2",
+          message: 'И Human Interface Guidelines и Material Design рекомендуют...',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Андрей",
+          name: 'Андрей',
           avatar: avatarDefault,
-          message: "Изображение",
-          time: "10:49",
-          countMessage: "2",
+          message: 'Изображение',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Киноклуб",
+          name: 'Киноклуб',
           avatar: avatarDefault,
-          message: "стикер",
-          userMessage: "Вы: ",
-          time: "10:49",
-          countMessage: "2",
+          message: 'стикер',
+          userMessage: 'Вы: ',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Илья",
+          name: 'Илья',
           avatar: avatarDefault,
-          message:
-            "И Human Interface Guidelines и Material Design рекомендуют...",
-          time: "10:49",
-          countMessage: "2",
+          message: 'И Human Interface Guidelines и Material Design рекомендуют...',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Андрей",
+          name: 'Андрей',
           avatar: avatarDefault,
-          message: "Изображение",
-          time: "10:49",
-          countMessage: "2",
+          message: 'Изображение',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Киноклуб",
+          name: 'Киноклуб',
           avatar: avatarDefault,
-          message: "стикер",
-          userMessage: "Вы: ",
-          time: "10:49",
-          countMessage: "2",
+          message: 'стикер',
+          userMessage: 'Вы: ',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Илья",
+          name: 'Илья',
           avatar: avatarDefault,
-          message:
-            "И Human Interface Guidelines и Material Design рекомендуют...",
-          time: "10:49",
-          countMessage: "2",
+          message: 'И Human Interface Guidelines и Material Design рекомендуют...',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Андрей",
+          name: 'Андрей',
           avatar: avatarDefault,
-          message: "Изображение",
-          time: "10:49",
-          countMessage: "2",
+          message: 'Изображение',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Киноклуб",
+          name: 'Киноклуб',
           avatar: avatarDefault,
-          message: "стикер",
-          userMessage: "Вы: ",
-          time: "10:49",
-          countMessage: "2",
+          message: 'стикер',
+          userMessage: 'Вы: ',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Илья",
+          name: 'Илья',
           avatar: avatarDefault,
-          message:
-            "И Human Interface Guidelines и Material Design рекомендуют...",
-          time: "10:49",
-          countMessage: "2",
+          message: 'И Human Interface Guidelines и Material Design рекомендуют...',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Андрей",
+          name: 'Андрей',
           avatar: avatarDefault,
-          message: "Изображение",
-          time: "10:49",
-          countMessage: "2",
+          message: 'Изображение',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Киноклуб",
+          name: 'Киноклуб',
           avatar: avatarDefault,
-          message: "стикер",
-          userMessage: "Вы: ",
-          time: "10:49",
-          countMessage: "2",
+          message: 'стикер',
+          userMessage: 'Вы: ',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Илья",
+          name: 'Илья',
           avatar: avatarDefault,
-          message:
-            "И Human Interface Guidelines и Material Design рекомендуют...",
-          time: "10:49",
-          countMessage: "2",
+          message: 'И Human Interface Guidelines и Material Design рекомендуют...',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Андрей",
+          name: 'Андрей',
           avatar: avatarDefault,
-          message: "Изображение",
-          time: "10:49",
-          countMessage: "2",
+          message: 'Изображение',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Киноклуб",
+          name: 'Киноклуб',
           avatar: avatarDefault,
-          message: "стикер",
-          userMessage: "Вы: ",
-          time: "10:49",
-          countMessage: "2",
+          message: 'стикер',
+          userMessage: 'Вы: ',
+          time: '10:49',
+          countMessage: '2',
         },
         {
-          name: "Илья",
+          name: 'Илья',
           avatar: avatarDefault,
-          message:
-            "И Human Interface Guidelines и Material Design рекомендуют...",
-          time: "10:49",
-          countMessage: "2",
+          message: 'И Human Interface Guidelines и Material Design рекомендуют...',
+          time: '10:49',
+          countMessage: '2',
         },
       ],
       showModalAddUser: false,
       showModalRemoveUser: true,
-      currentUserName: "Андрей",
+      currentUserName: 'Андрей',
       currentUserAvatar: avatarDefault,
-      messagePhoto: messagePhoto,
+      messagePhoto,
       // closedChat: true
     },
   ],
   profile: [
     Pages.ProfilePage,
     {
-      name: "Maksim",
+      name: 'Maksim',
       avatar: avatarDefault,
     },
   ],
   profileEdit: [
     Pages.ProfileEditPage,
     {
-      name: "Maksim",
+      name: 'Maksim',
       avatar: avatarDefault,
       showModalAddNewAvtar: true,
     },
@@ -207,32 +208,49 @@ const pages = {
   profileEditPassword: [
     Pages.ProfileEditPasswordPage,
     {
-      name: "Maksim",
+      name: 'Maksim',
       avatar: avatarDefault,
     },
   ],
-};
+} as const;
 
 Object.entries(Components).forEach(([name, template]) => {
-  Handlebars.registerPartial(name, template as string);
+  if (typeof template === 'function') {
+    return;
+  }
+  Handlebars.registerPartial(name, template);
 });
 
 function navigate(page: keyof typeof pages) {
   const [source, context] = pages[page];
-  const container = document.getElementById("app")!;
+  if (typeof source === 'function') {
+    renderDOM(
+      new source(
+        {} as ILoginProps &
+          ISigninProps &
+          IChatsProps &
+          IPropfileProps &
+          IProfileEditProps &
+          IPropfileEditPasswordsProps
+      )
+    );
+    return;
+  }
+
+  const container = document.getElementById('app')!;
 
   const temlpatingFunction = Handlebars.compile(source);
   container.innerHTML = temlpatingFunction(context);
 }
 
-document.addEventListener("DOMContentLoaded", () => navigate("nav"));
+document.addEventListener('DOMContentLoaded', () => navigate('nav'));
 
-document.addEventListener("click", (e: MouseEvent) => {
+document.addEventListener('click', (e: MouseEvent) => {
   const { target } = e;
   if (!(target instanceof HTMLElement)) {
     return;
   }
-  const page = target.getAttribute("page");
+  const page = target.getAttribute('page');
   if (page && page in pages) {
     navigate(page as keyof typeof pages);
 

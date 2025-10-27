@@ -1,2 +1,3 @@
-import "./profileEdit.scss";
-export { default as ProfileEditPage } from "./profileEdit.hbs?raw";
+import './profileEdit.scss';
+
+export { default as ProfileEditPage } from './profileEdit';

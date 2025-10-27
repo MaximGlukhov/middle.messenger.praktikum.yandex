@@ -3,40 +3,48 @@
   position: relative;
   margin-bottom: 16px;
 
+  .inputPlaceholder {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    bottom: 7px;
+    color: $color-grey;
+    transition: font-size 0.2s, transform 0.2s;
+  }
+
+  .input {
+    width: 100%;
+    border-bottom: 1px solid $color-blue;
+    padding: 14px 0 7px;
+
+    &:focus + .inputPlaceholder,
+    &:not(:placeholder-shown) + .inputPlaceholder {
+      font-size: 9px;
+      transform: translateY(-20px);
+    }
+  }
+
+  .input[type='file'] {
+    display: none;
+
+    + .inputPlaceholder {
+      display: block;
+      position: static;
+      pointer-events: visible;
+      cursor: pointer;
+      color: $color-blue;
+      font-size: 12px;
+      line-height: 1.2;
+      text-align: center;
+      transform: none;
+    }
+  }
+
   &_error {
     .inputError {
       opacity: 1;
     }
   }
-
-  .input[type="password"] {
-    color: $color-error;
-  }
-
-  .input[type="file"] {
-    display: none;
-  }
-
-  .input[type="file"] + .inputPlaceholder {
-    display: block;
-    position: static;
-    pointer-events: visible;
-    cursor: pointer;
-    color: $color-blue;
-    font-size: 12px;
-    line-height: 1.2;
-    text-align: center;
-    transform: none;
-  }
-}
-
-.inputPlaceholder {
-  pointer-events: none;
-  position: absolute;
-  left: 0;
-  bottom: 7px;
-  color: $color-grey;
-  transition: font-size 0.2s, transform 0.2s;
 }
 
 .inputError {
@@ -45,20 +53,7 @@
   top: 100%;
   left: 0;
   margin-top: 7px;
-  opacity: 0;
   font-size: 8px;
   font-weight: 400;
   transition: opacity 0.2s;
-}
-
-.input {
-  width: 100%;
-  border-bottom: 1px solid $color-blue;
-  padding: 14px 0 7px;
-
-  &:focus + .inputPlaceholder,
-  &:not(:placeholder-shown) + .inputPlaceholder {
-    font-size: 9px;
-    transform: translateY(-20px);
-  }
 }
