@@ -28,6 +28,12 @@
     "no-plusplus": "off",
     "no-confusing-arrow": "off",
     "implicit-arrow-linebreak": "off",
+    "no-constructor-return": "off",
+    "no-restricted-syntax": "off",
+    "func-names": "off",
+    "prefer-destructuring": "off",
+    "indent": "off",
+    "prefer-promise-reject-errors": "off",
     "max-len": [2, 120]
   }
 }

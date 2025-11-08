@@ -1,5 +1,9 @@
+import { getUserData } from '../../actions/auth';
 import { AddUserModal, Button, Input, RemoveUserModal } from '../../components';
+import { ROUTER } from '../../const/routesPath';
 import Block from '../../core/block';
+import { connect } from '../../utils/connect';
+import type { PlainObject } from '../../utils/isEqual';
 
 interface IChatsFields {
   message: string;
@@ -12,8 +16,8 @@ export interface IChatsProps {
   [key: string]: unknown;
 }
 
-export default class ChatsPage extends Block<IChatsProps> {
-  constructor(props: IChatsProps) {
+class ChatsPage extends Block<IChatsProps> {
+  constructor(props: Partial<IChatsProps>) {
     super('main', {
       ...props,
       formState: {
@@ -68,6 +72,13 @@ export default class ChatsPage extends Block<IChatsProps> {
         onOk: () => this.setProps({ ...this.props, showRemoveUserModal: false }),
       }),
 
+      ProfileLink: new Button({
+        color: 'text',
+        title: 'Профиль',
+        className: 'chats__profileLink',
+        onClick: () => window.router.go(ROUTER.settings),
+      }),
+
       SubmitMessageBtn: new Button({
         title: '',
         className: 'chats__messageBtn',
@@ -91,12 +102,14 @@ export default class ChatsPage extends Block<IChatsProps> {
     });
   }
 
+  public componentDidMount(_oldProps?: IChatsProps | undefined): void {
+    getUserData();
+  }
+
   public render(): string {
     return `
   <div class="chats__bar">
-    <a href="#" class="chats__profileLink">
-      Профиль
-    </a>
+    {{{ProfileLink}}}
     <input name="search" class="chats__search" type="text" placeholder="Поиск" />
     <ul class="chats__list">
       
@@ -105,8 +118,12 @@ export default class ChatsPage extends Block<IChatsProps> {
   <div class="chats__messages">
     <div class="chats__notEmpty">
       <header class="chats__currentUser">
-        <img class="chats__currentUserAvatar" src={{currentUserAvatar}} alt="аватар">
-        <p class="chats__currentUserName"><strong>{{currentUserName}}</strong></p>
+        {{#if user.avatar}}
+          <img class="chats__currentUserAvatar" src="https://ya-praktikum.tech/api/v2/{{user.avatar}}" alt="аватар">
+        {{else}}
+          <img class="chats__currentUserAvatar" src="/src/assets/avatar-default.svg" alt="аватар">
+        {{/if}}
+        <p class="chats__currentUserName"><strong>{{user.first_name}}</strong></p>
         <div class="chats__currentUserBtns">
           {{{ AddUserButton }}}
           {{{ RemoveUserButton }}}
@@ -185,3 +202,13 @@ export default class ChatsPage extends Block<IChatsProps> {
   `;
   }
 }
+
+const mapStateToProps = (state: PlainObject) => {
+  return {
+    isLoading: state.isLoading,
+    getUserError: state.loginError,
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(ChatsPage);

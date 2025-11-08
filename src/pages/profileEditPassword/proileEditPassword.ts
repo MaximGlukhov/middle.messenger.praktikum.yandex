@@ -2,6 +2,7 @@ import Block from '../../core/block';
 import { AddNewAvatarModal, Button, Input } from '../../components';
 import { UserCard } from '../../components/userCard';
 import type InputLabel from '../../components/input/inputLabel';
+import { editPassword } from '../../actions/users';
 
 export interface IPropfileEditPasswordsProps {
   formState: {
@@ -15,6 +16,7 @@ export interface IPropfileEditPasswordsProps {
     repeatNewPassword: string;
   };
   showAddNewAvatarModal: boolean;
+  onRoutProfile: () => void;
   [key: string]: unknown;
 }
 
@@ -30,7 +32,7 @@ export default class ProfileEditPasswordPage extends Block<
   IPropfileEditPasswordsProps,
   IPropfileEditPasswordsChildren
 > {
-  constructor(props: IPropfileEditPasswordsProps) {
+  constructor(props: Partial<IPropfileEditPasswordsProps>) {
     super('main', {
       ...props,
       formState: {
@@ -171,7 +173,13 @@ export default class ProfileEditPasswordPage extends Block<
           const hasEmpty = Object.values(formState).some((v) => !v);
 
           if (!hasErrors && !hasEmpty) {
-            console.log(this.props.formState);
+            editPassword({
+              oldPassword,
+              newPassword,
+            });
+            if (props.onRoutProfile) {
+              props.onRoutProfile();
+            }
           } else if (hasEmpty) {
             if (!oldPassword) {
               this.setProps({

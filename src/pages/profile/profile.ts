@@ -1,8 +1,12 @@
 import Block from '../../core/block';
 import { AddNewAvatarModal, Button, Input } from '../../components';
 import { UserCard } from '../../components/userCard';
+import { logout } from '../../actions/auth';
+import { connect } from '../../utils/connect';
+import type { PlainObject } from '../../utils/isEqual';
+import type { IUser } from '../../types';
 
-export interface IPropfileProps {
+export interface IProfileProps {
   formState: {
     email: string;
     login: string;
@@ -21,11 +25,25 @@ export interface IPropfileProps {
     password: string;
     repeatPassword: string;
   };
+  user: IUser | null;
   showAddNewAvatarModal: boolean;
+  onRouteEditData: () => void;
+  onRouteEditPassword: () => void;
+  [key: string]: unknown;
 }
 
-export default class ProfilePage extends Block {
-  constructor(props: IPropfileProps) {
+export interface IProfileChildren {
+  [key: string]: unknown;
+  EmailInput: Block;
+  LoginInput: Block;
+  NameInput: Block;
+  SecondNameInput: Block;
+  NickNameInput: Block;
+  PhoneInput: Block;
+}
+
+class ProfilePage extends Block<IProfileProps, IProfileChildren> {
+  constructor(props: Partial<IProfileProps>) {
     super('main', {
       ...props,
       formState: {
@@ -53,56 +71,110 @@ export default class ProfilePage extends Block {
         },
       }),
       AddNewAvatarModal: new AddNewAvatarModal({
-        onOk: () => this.setProps({ showAddNewAvatarModal: false }),
+        onOk: () => {
+          this.setProps({ showAddNewAvatarModal: false });
+        },
       }),
 
       EmailInput: new Input({
         name: 'email',
         type: 'text',
+        readonly: true,
+        valueName: props.user?.email,
       }),
 
       LoginInput: new Input({
         name: 'login',
         type: 'text',
+        readonly: true,
+        value: props.user?.login,
       }),
 
       NameInput: new Input({
         name: 'first_name',
         type: 'text',
+        readonly: true,
+        valueName: props.user?.first_name,
       }),
 
       SecondNameInput: new Input({
         name: 'second_name',
         type: 'text',
+        readonly: true,
+        valueName: props.user?.second_name,
       }),
 
       NickNameInput: new Input({
         name: 'display_name',
         type: 'text',
+        readonly: true,
+        valueName: props.user?.display_name ?? '',
       }),
 
       PhoneInput: new Input({
         name: 'phone',
+        readonly: true,
         type: 'text',
+        valueName: props.user?.phone,
       }),
 
       EditDataButton: new Button({
         title: 'Изменить данные',
         color: 'text',
+        onClick: props.onRouteEditData,
       }),
 
       EditPasswordButton: new Button({
         title: 'Изменить пароль',
         color: 'text',
+        onClick: props.onRouteEditPassword,
       }),
 
       ExitButton: new Button({
         title: 'Выйти',
         color: 'text',
         className: 'profile__exitBtn',
+        onClick: () => {
+          logout();
+        },
       }),
     });
   }
+
+  componentDidUpdate(oldProps: IProfileProps, newProps: IProfileProps) {
+    if (oldProps.user !== newProps.user) {
+      this.updateAllInputs(newProps.user);
+    }
+    return true;
+  }
+
+  private updateAllInputs(user: IUser | null) {
+    const inputs = ['EmailInput', 'LoginInput', 'NameInput', 'SecondNameInput', 'NickNameInput', 'PhoneInput'] as const;
+
+    inputs.forEach((inputName) => {
+      if (this.children[inputName]) {
+        this.children[inputName].setProps({
+          valueName: this.getUserFieldValue(user, inputName),
+        });
+      }
+    });
+  }
+
+  private getUserFieldValue(user: IUser | null, inputName: string): string {
+    if (!user) return '';
+
+    const fieldMap: Record<string, string> = {
+      EmailInput: user.email,
+      LoginInput: user.login,
+      NameInput: user.first_name,
+      SecondNameInput: user.second_name,
+      NickNameInput: user.display_name ?? '',
+      PhoneInput: user.phone,
+    };
+
+    return fieldMap[inputName] || '';
+  }
+
   public render(): string {
     return `
       <form class="container profile">
@@ -152,3 +224,12 @@ export default class ProfilePage extends Block {
     `;
   }
 }
+
+const mapStateToProps = (state: PlainObject) => {
+  return {
+    isLoading: state.isLoading,
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(ProfilePage);

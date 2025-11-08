@@ -78,13 +78,3 @@ export function isEmpty(value: unknown) {
 
   return false;
 }
-
-console.log(
-  isEmpty(
-    new Map([
-      ['1', 'str1'],
-      ['1_num', 'num1'],
-      ['true', 'bool1'],
-    ])
-  )
-);
