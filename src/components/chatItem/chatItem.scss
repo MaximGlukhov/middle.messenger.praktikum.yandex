@@ -4,7 +4,8 @@
   display: flex;
   padding: 10px;
 
-  &_active {
+  &_active,
+  &:hover {
     background-color: rgba(228, 237, 253, 1);
   }
 
@@ -13,6 +14,8 @@
     height: 47px;
     object-fit: cover;
     margin-right: 10px;
+    border-radius: 50%;
+    overflow: hidden;
   }
 
   &__description {

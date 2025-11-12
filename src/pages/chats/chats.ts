@@ -1,8 +1,17 @@
 import { getUserData } from '../../actions/auth';
+import { getChats } from '../../actions/chats';
+import { searchUser } from '../../actions/users';
 import { AddUserModal, Button, Input, RemoveUserModal } from '../../components';
+import { ChatsList } from '../../components/chatsList';
+import { Messages } from '../../components/messages';
 import { ROUTER } from '../../const/routesPath';
 import Block from '../../core/block';
 import { connect } from '../../utils/connect';
+import { formatTime } from '../../utils/formatTime';
+import { debounce } from '../../utils/mydash';
+
+import type { GetChats } from '../../api/types';
+import type { IUser } from '../../types';
 import type { PlainObject } from '../../utils/isEqual';
 
 interface IChatsFields {
@@ -13,10 +22,31 @@ export interface IChatsProps {
   formState: IChatsFields;
   errors: IChatsFields;
   showModal: boolean;
+  user: IUser;
+  chats: GetChats[];
+  messages: {
+    chat_id: number;
+    content: string;
+    file: File | null;
+    id: number;
+    is_read: boolean;
+    time: string;
+    type: string;
+    user_id: number;
+  }[];
   [key: string]: unknown;
 }
 
-class ChatsPage extends Block<IChatsProps> {
+export interface IChatsChildren {
+  ChatsList: Block;
+  InputMessage: Block;
+  Messages: Block;
+  [key: string]: unknown;
+}
+
+class ChatsPage extends Block<IChatsProps, IChatsChildren> {
+  socket: WebSocket | undefined;
+  searchInputDebounce: (...args: string[]) => void;
   constructor(props: Partial<IChatsProps>) {
     super('main', {
       ...props,
@@ -26,6 +56,11 @@ class ChatsPage extends Block<IChatsProps> {
       errors: {
         message: '',
       },
+
+      ChatsList: new ChatsList({
+        chatsList: props.chats,
+      }),
+
       showAddUserModal: false,
       showRemoveUserModal: false,
       className: 'chats',
@@ -86,7 +121,18 @@ class ChatsPage extends Block<IChatsProps> {
         onClick: (e: MouseEvent) => {
           e.preventDefault();
           if (this.props.formState.message !== '') {
-            console.log(this.props.formState);
+            this.socket?.send(
+              JSON.stringify({
+                content: `${this.props.formState.message}`,
+                type: 'message',
+              })
+            );
+            this.setProps({
+              ...this.props,
+              formState: {
+                message: '',
+              },
+            });
           } else {
             this.setProps({
               ...this.props,
@@ -99,27 +145,129 @@ class ChatsPage extends Block<IChatsProps> {
           }
         },
       }),
+
+      SearchInput: new Input({
+        name: 'search',
+        type: 'text',
+        className: 'chats__search',
+        placeholder: 'Поиск',
+        onInput: (e: InputEvent) => {
+          const { value } = e.currentTarget as HTMLInputElement;
+          this.searchInputDebounce(value);
+        },
+      }),
+
+      Messages: new Messages({
+        messages: props.messages
+          ?.map((prop) => ({
+            chat_id: prop.chat_id,
+            content: prop.content,
+            file: prop.file,
+            id: prop.id,
+            is_read: prop.is_read,
+            time: formatTime(prop.time),
+            type: prop.type,
+            user_id: prop.user_id,
+          }))
+          .reverse(),
+      }),
+    });
+
+    this.searchInputDebounce = debounce((value: string) => {
+      searchUser({ login: value });
+    }, 500);
+  }
+
+  private initWebSocket() {
+    this.socket = new WebSocket(
+      `wss://ya-praktikum.tech/ws/chats/${this.props.user.id}/${this.props.activeChat}/${this.props.token}`
+    );
+
+    this.socket.addEventListener('open', () => {
+      this.socket?.send(
+        JSON.stringify({
+          content: `0`,
+          type: 'get old',
+        })
+      );
+    });
+
+    this.socket.addEventListener('message', (event) => {
+      const mess = [...this.props.messages];
+      if (Array.isArray(JSON.parse(event.data))) {
+        window.store.set({ messages: JSON.parse(event.data) });
+      } else {
+        mess.unshift(JSON.parse(event.data));
+        window.store.set({ messages: mess });
+      }
+    });
+
+    this.socket.addEventListener('close', (event) => {
+      if (event.wasClean) {
+        console.log('Соединение закрыто чисто');
+      } else {
+        console.log('Обрыв соединения');
+      }
+
+      console.log(`Код: ${event.code} | Причина: ${event.reason}`);
     });
   }
 
   public componentDidMount(_oldProps?: IChatsProps | undefined): void {
     getUserData();
+    getChats();
+  }
+
+  public componentDidUpdate(oldProps: IChatsProps, newProps: IChatsProps): boolean {
+    if (oldProps.chats !== newProps.chats) {
+      this.children.ChatsList.setProps({
+        chatsList: newProps.chats,
+      });
+    }
+
+    if (oldProps.token !== newProps.token) {
+      this.initWebSocket();
+    }
+
+    if (oldProps.formState?.message !== newProps.formState?.message) {
+      this.children.InputMessage.setProps({
+        valueName: newProps.formState?.message || '',
+      });
+    }
+
+    if (oldProps.messages !== newProps.messages) {
+      this.children.Messages.setProps({
+        messages: newProps.messages
+          .map((prop) => ({
+            chat_id: prop.chat_id,
+            content: prop.content,
+            file: prop.file,
+            id: prop.id,
+            is_read: prop.is_read,
+            time: formatTime(prop.time),
+            type: prop.type,
+            user_id: prop.user_id,
+          }))
+          .reverse(),
+      });
+    }
+
+    return true;
   }
 
   public render(): string {
     return `
   <div class="chats__bar">
     {{{ProfileLink}}}
-    <input name="search" class="chats__search" type="text" placeholder="Поиск" />
-    <ul class="chats__list">
-      
-    </ul>
+    {{{SearchInput}}}
+    {{{ ChatsList }}}
   </div>
   <div class="chats__messages">
     <div class="chats__notEmpty">
       <header class="chats__currentUser">
         {{#if user.avatar}}
-          <img class="chats__currentUserAvatar" src="https://ya-praktikum.tech/api/v2/{{user.avatar}}" alt="аватар">
+          <img class="chats__currentUserAvatar"
+          src="https://ya-praktikum.tech/api/v2/resources{{user.avatar}}" alt="аватар">
         {{else}}
           <img class="chats__currentUserAvatar" src="/src/assets/avatar-default.svg" alt="аватар">
         {{/if}}
@@ -131,66 +279,15 @@ class ChatsPage extends Block<IChatsProps> {
       </header>
 
       <section class="chats__history">
-        <div class="chats__messageTime">19 июня</div>
-        <article class="chats__message chats__message_sender">
-          <p>Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила
-            Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью
-            500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с
-            собой забрали только кассеты с пленкой.
-          </p>
-          <p>
-            Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не
-            попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.</p>
-          <div class="chats__senderMessageTime">11:56</div>
-        </article>
-        <article class="chats__message chats__message_sender">
-          <img class="chats__messagePhoto" src={{messagePhoto}} alt="картинка в сообщении">
-          <div class="chats__senderMessageTime">11:56</div>
-        </article>
-        <article class="chats__message chats__message_owner">
-          <p>Круто!</p>
-          <div class="chats__ownerMessageTime">12:00</div>
-        </article>
-
-        <div class="chats__messageTime">19 июня</div>
-        <article class="chats__message chats__message_sender">
-          <p>Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила
-            Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью
-            500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с
-            собой забрали только кассеты с пленкой.
-          </p>
-          <p>
-            Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не
-            попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.</p>
-          <div class="chats__senderMessageTime">11:56</div>
-        </article>
-        <article class="chats__message chats__message_sender">
-          <img class="chats__messagePhoto" src={{messagePhoto}} alt="картинка в сообщении">
-          <div class="chats__senderMessageTime">11:56</div>
-        </article>
-        <article class="chats__message chats__message_owner">
-          <p>Круто!</p>
-
-          <div class="chats__ownerMessageTime">
-            <div class="chats__message_ownerCheck">
-              <svg width="10" height="5" viewBox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <line y1="-0.5" x2="3.765" y2="-0.5"
-                  transform="matrix(0.705933 0.708278 -0.705933 0.708278 0.700195 2.33313)" stroke="currentColor" />
-                <line y1="-0.5" x2="5.6475" y2="-0.5"
-                  transform="matrix(0.705933 -0.708278 0.705933 0.708278 3.35828 5.00006)" stroke="currentColor" />
-                <line y1="-0.5" x2="5.6475" y2="-0.5"
-                  transform="matrix(0.705933 -0.708278 0.705933 0.708278 6.01587 5.00006)" stroke="currentColor" />
-              </svg>
-            </div>
-            <span>12:00</span>
-          </div>
-        </article>
+        {{{Messages}}}
       </section>
 
-      <form class="chats__messageForm">
-        {{{ InputMessage }}}
-        {{{ SubmitMessageBtn }}}
-      </form>
+      {{#if token}}
+        <form class="chats__messageForm">
+          {{{ InputMessage }}}
+          {{{ SubmitMessageBtn }}}
+        </form>
+      {{/if}}  
     </div>
   </div>
   {{#if showAddUserModal}}
@@ -208,6 +305,10 @@ const mapStateToProps = (state: PlainObject) => {
     isLoading: state.isLoading,
     getUserError: state.loginError,
     user: state.user,
+    chats: state.chats,
+    activeChat: state.activeChat,
+    token: state.token,
+    messages: state.messages,
   };
 };
 

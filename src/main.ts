@@ -19,11 +19,13 @@ const APP_ROOT_ELEMNT = '#app';
 
 window.store = new Store({
   isLoading: false,
-  loginError: false,
-  signinError: false,
-  getUserError: false,
-  logoutError: false,
+  apiError: false,
   user: null,
+  chats: [],
+  activeChat: null,
+  token: null,
+  searchUser: null,
+  messages: [],
 });
 
 window.router = new Router(APP_ROOT_ELEMNT);

@@ -1,4 +1,5 @@
 import { HTTPTransport } from '../core/httpTransport';
+import type { IUser } from '../types';
 import type { APIError, ChangeUserData, ChangeUserPassword, SearchUserData } from './types';
 
 const usersApi = new HTTPTransport('user');
@@ -16,7 +17,7 @@ export default class UsersApi {
     return usersApi.put<void | APIError>('/password', { data });
   }
 
-  async search(data: SearchUserData): Promise<void | APIError> {
-    return usersApi.post<void | APIError>('/search', { data });
+  async search(data: SearchUserData): Promise<IUser[]> {
+    return usersApi.post<IUser[]>('/search', { data });
   }
 }

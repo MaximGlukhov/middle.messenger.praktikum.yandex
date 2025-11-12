@@ -1,3 +1,5 @@
+import type { IUser } from '../types';
+
 export type APIError = {
   reason: string;
 };
@@ -65,3 +67,21 @@ export type ChangeUserPassword = {
 export type SearchUserData = {
   login: string;
 };
+
+export type GetChats = {
+  id: number;
+  title: string;
+  avatar: string;
+  unread_count: number;
+  created_by: number;
+  last_message?: {
+    user: IUser;
+    time: string;
+    content: string;
+  };
+};
+
+export interface IAddUsersChatData {
+  users: number[];
+  chatId: number;
+}

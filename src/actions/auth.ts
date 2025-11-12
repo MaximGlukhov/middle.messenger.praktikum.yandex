@@ -9,11 +9,11 @@ export const signinUser = (model: CreateUser) => {
   authApi
     .create(model)
     .then(() => {
-      window.router.go(ROUTER.login);
-      window.store.set({ signinError: false });
+      window.router.go(ROUTER.messenger);
+      window.store.set({ apiError: false });
     })
     .catch((err) => {
-      window.store.set({ signinError: err.reason });
+      window.store.set({ apiError: err.reason });
     })
     .finally(() => {
       window.store.set({ isLoading: false });
@@ -26,10 +26,10 @@ export const loginUser = (model: LoginRequestData) => {
     .login(model)
     .then(() => {
       window.router.go(ROUTER.messenger);
-      window.store.set({ signinError: false });
+      window.store.set({ apiError: false });
     })
     .catch((err) => {
-      window.store.set({ signinError: err });
+      window.store.set({ apiError: err });
     })
     .finally(() => {
       window.store.set({ isLoading: false });
@@ -42,10 +42,11 @@ export const getUserData = () => {
     .me()
     .then((res) => {
       window.store.set({ user: res });
-      window.store.set({ getUserError: false });
+      window.store.set({ apiError: false });
     })
     .catch((err) => {
-      window.store.set({ getUserError: err });
+      window.store.set({ apiError: err });
+      window.router.go(ROUTER.login);
     })
     .finally(() => {
       window.store.set({ isLoading: false });

@@ -23,7 +23,7 @@ class UserCard extends Block {
     return `
       <div class="userCard__avatar">
         {{#if user.avatar}}
-          <img src="https://ya-praktikum.tech/api/v2{{user.avatar}}" alt="аватар">
+          <img src="https://ya-praktikum.tech/api/v2/resources{{user.avatar}}" alt="аватар">
         {{else}}
           <img src="/src/assets/avatar-default.svg" alt="аватар">
         {{/if}}
