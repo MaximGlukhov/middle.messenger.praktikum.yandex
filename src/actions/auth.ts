@@ -30,6 +30,9 @@ export const loginUser = (model: LoginRequestData) => {
     })
     .catch((err) => {
       window.store.set({ apiError: err });
+      if (err.reason === 'User already in system') {
+        window.router.go(ROUTER.messenger);
+      }
     })
     .finally(() => {
       window.store.set({ isLoading: false });

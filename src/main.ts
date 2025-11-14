@@ -30,7 +30,7 @@ window.store = new Store({
 
 window.router = new Router(APP_ROOT_ELEMNT);
 window.router
-  .use('/', Pages.NavPage)
+  .use('/nav', Pages.NavPage)
   .use(ROUTER.login, Pages.LoginPage)
   .use(ROUTER.signin, Pages.SigninPage)
   .use(ROUTER.settings, Pages.SettingsPage)
