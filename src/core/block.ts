@@ -2,10 +2,8 @@ import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
 import EventBus from './eventBus';
 
-export default abstract class Block<
-  Props extends Record<string, unknown> = {},
-  Children extends Record<string, Block | Block[] | unknown> = {}
-> {
+export type BlockProps = Record<string, Block | Block[] | unknown>;
+export default abstract class Block<Props extends Record<string, unknown> = {}, Children extends BlockProps = {}> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -100,7 +98,7 @@ export default abstract class Block<
     });
   }
 
-  protected componentDidMount(_oldProps?: Props): void {}
+  componentDidMount(_oldProps?: Props): void {}
 
   dispatchComponentDidMount() {
     this._eventBus.emit(Block.EVENTS.FLOW_CDM);
@@ -113,7 +111,7 @@ export default abstract class Block<
     }
   }
 
-  protected componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
+  componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
     return true;
   }
 

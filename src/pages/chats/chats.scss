@@ -17,26 +17,29 @@
     padding-right: 12px;
     background-repeat: no-repeat;
     background-size: auto 80%;
-    background-position: right center;
+    background-position: right bottom 1px;
     background-image: url('../../assets/arrow.svg');
   }
 
   &__search {
-    width: 100%;
-    background-color: $color-light-grey;
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-    margin-bottom: 14px;
-    background-size: 20px 20px;
-    background-position: 102px center;
-    background-repeat: no-repeat;
-    background-image: url('../../assets/search.svg');
+    .input {
+      width: 100%;
+      background-color: $color-light-grey;
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+      margin-bottom: 14px;
+      background-size: 20px 20px;
+      background-position: 102px center;
+      background-repeat: no-repeat;
+      background-image: url('../../assets/search.svg');
+      border-bottom: 0;
 
-    &:focus {
-      text-align: left;
-      background-position: 10px center;
-      padding: 10px 10px 10px 34px;
+      &:focus {
+        text-align: left;
+        background-position: 10px center;
+        padding: 10px 10px 10px 34px;
+      }
     }
   }
 
@@ -77,6 +80,8 @@
     width: 34px;
     height: 34px;
     margin-right: 10px;
+    border-radius: 50%;
+    overflow: hidden;
   }
 
   &__currentUserBtns {
@@ -102,6 +107,8 @@
   }
 
   &__history {
+    display: flex;
+    flex-direction: column-reverse;
     height: calc(100vh - 120px);
     overflow-y: auto;
   }

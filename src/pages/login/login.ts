@@ -1,7 +1,12 @@
+import { loginUser } from '../../actions/auth';
 import { Button, Input } from '../../components';
+import { ROUTER } from '../../const/routesPath';
 import Block from '../../core/block';
+import type Router from '../../core/router';
+import { connect } from '../../utils/connect';
+import type { PlainObject } from '../../utils/isEqual';
 
-interface ILoginFields {
+export interface ILoginFields {
   login: string;
   password: string;
 }
@@ -10,6 +15,7 @@ export interface ILoginProps {
   formState: ILoginFields;
   errors: ILoginFields;
   [key: string]: unknown;
+  router?: Router;
 }
 
 interface ILoginChildren {
@@ -18,8 +24,8 @@ interface ILoginChildren {
   [key: string]: unknown;
 }
 
-export default class LoginPage extends Block<ILoginProps, ILoginChildren> {
-  constructor(props: ILoginProps) {
+class LoginPage extends Block<ILoginProps, ILoginChildren> {
+  constructor(props: Partial<ILoginProps>) {
     super('main', {
       ...props,
       formState: {
@@ -110,7 +116,7 @@ export default class LoginPage extends Block<ILoginProps, ILoginChildren> {
           const { login, password } = this.props.formState;
 
           if (this.props.errors.login === '' && this.props.errors.password === '' && login !== '' && password !== '') {
-            console.log(this.props.formState);
+            loginUser(this.props.formState);
           } else if (login === '' || password === '') {
             if (login === '') {
               this.setProps({
@@ -148,9 +154,7 @@ export default class LoginPage extends Block<ILoginProps, ILoginChildren> {
       SignUpButton: new Button({
         title: 'Нет аккаунта?',
         color: 'text',
-        onClick(e: MouseEvent) {
-          e.preventDefault();
-        },
+        onClick: () => window.router?.go(ROUTER.signin),
       }),
     });
   }
@@ -171,3 +175,12 @@ export default class LoginPage extends Block<ILoginProps, ILoginChildren> {
     `;
   }
 }
+
+const mapStateToProps = (state: PlainObject) => {
+  return {
+    isLoading: state.isLoading,
+    loginError: state.loginError,
+  };
+};
+
+export default connect(mapStateToProps)(LoginPage);

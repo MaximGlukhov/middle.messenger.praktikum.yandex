@@ -7,3 +7,4 @@ export { ChatsPage } from './chats';
 export { ProfilePage } from './profile';
 export { ProfileEditPage } from './profileEdit';
 export { ProfileEditPasswordPage } from './profileEditPassword';
+export { SettingsPage } from './settings';
