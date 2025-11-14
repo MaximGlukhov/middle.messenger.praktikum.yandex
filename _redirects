@@ -1,5 +1,5 @@
-/NavPage             /nav
-/LoginPage           /
-/SigninPage          /sign-up
-/ChatsPage           /messenger
-/SettingsPage        /settings
+/Nav.ts              /nav
+/LoginPage.ts        /
+/SigninPage.ts       /sign-up
+/ChatsPage.ts        /messenger
+/SettingsPage.ts     /settings
