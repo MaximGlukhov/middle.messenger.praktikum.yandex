@@ -5,6 +5,7 @@ import { ModalBody } from './modalBody';
 
 interface IAddNewAvatarModalProps {
   onOk: () => void;
+  onClose: () => void;
   file?: File;
   [key: string]: unknown;
 }
@@ -22,6 +23,9 @@ export default class AddNewAvatarModal extends Block<IAddNewAvatarModalProps, {}
             data.append('avatar', this.props.file);
             editAvatar(data);
           }
+          props.onOk();
+        },
+        onClose: () => {
           props.onOk();
         },
         Body: new ModalBody({

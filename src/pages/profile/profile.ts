@@ -40,6 +40,7 @@ export interface IProfileChildren {
   SecondNameInput: Block;
   NickNameInput: Block;
   PhoneInput: Block;
+  UserCard: Block;
 }
 
 class ProfilePage extends Block<IProfileProps, IProfileChildren> {
@@ -72,6 +73,9 @@ class ProfilePage extends Block<IProfileProps, IProfileChildren> {
       }),
       AddNewAvatarModal: new AddNewAvatarModal({
         onOk: () => {
+          this.setProps({ showAddNewAvatarModal: false });
+        },
+        onClose: () => {
           this.setProps({ showAddNewAvatarModal: false });
         },
       }),

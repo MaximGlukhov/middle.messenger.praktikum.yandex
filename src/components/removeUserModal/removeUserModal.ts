@@ -1,4 +1,4 @@
-import { removeUser } from '../../actions/chats';
+import { removeUserToChat } from '../../actions/chats';
 import type { GetChats } from '../../api/types';
 import Block from '../../core/block';
 import { connect } from '../../utils/connect';
@@ -10,6 +10,7 @@ interface IRemoveUserModalProps {
   onOk: () => void;
   login?: string;
   chats: GetChats[];
+  activeChat: number;
   [key: string]: unknown;
 }
 class RemoveUserModal extends Block<IRemoveUserModalProps, {}> {
@@ -20,13 +21,12 @@ class RemoveUserModal extends Block<IRemoveUserModalProps, {}> {
         title: 'Удалить пользователя',
         labelOk: 'Удалить',
         onOk: () => {
-          const findChind = this.props.chats.find((item) => item.title === this.props.login);
-          console.log(this.props.login);
-          if (this.props.login && findChind) {
-            removeUser(findChind?.id);
+          if (this.props.login) {
+            removeUserToChat(this.props.activeChat, Number(this.props.login));
           }
           props.onOk();
         },
+        onClose: () => props.onOk(),
         Body: new ModalBody({
           onLoginSelect: (login: string) => this.handleLoginSelect(login),
         }),
@@ -59,6 +59,7 @@ class RemoveUserModal extends Block<IRemoveUserModalProps, {}> {
 const mapStateToProps = (state: PlainObject) => {
   return {
     chats: state.chats,
+    activeChat: state.activeChat,
   };
 };
 

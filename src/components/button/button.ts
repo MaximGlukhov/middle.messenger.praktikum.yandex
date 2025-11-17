@@ -1,7 +1,7 @@
 import Block from '../../core/block';
 
 interface IButtonProps {
-  title: string;
+  title?: string;
   color?: 'primary' | 'text';
   type?: string;
   className?: string;
@@ -19,7 +19,7 @@ export default class Button extends Block {
       },
       attrs: {
         type: props.type ?? 'button',
-        title: props.tooltip,
+        title: props.tooltip ?? '',
       },
     });
   }

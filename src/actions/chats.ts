@@ -36,16 +36,11 @@ export const addChat = (data: { title: string }) => {
     });
 };
 
-export const addUsersToChat = (login: { login: string }) => {
+export const addUsersToChat = (login: string, chatId: number) => {
   window.store.set({ isLoading: true });
-  usersApi.search(login).then((users) => {
-    chatsApi.add({ title: login.login }).then((chatId) => {
-      chatsApi.create(chatId.id).then((dataToken) => {
-        window.store.set({ token: dataToken.token, activeChat: chatId.id });
-        chatsApi.addUser({ users: [users[0].id], chatId: chatId.id });
-        getChats();
-      });
-    });
+  usersApi.search({ login }).then((users) => {
+    chatsApi.addUser({ users: [users[0].id], chatId });
+    getChats();
   });
 };
 
@@ -65,10 +60,10 @@ export const createTokenChat = (chatId: number) => {
     });
 };
 
-export const removeUser = (chatId: number) => {
+export const removeUserToChat = (chatId: number, login: number) => {
   window.store.set({ isLoading: true });
   chatsApi
-    .remove({ chatId })
+    .deleteUser({ users: [login], chatId })
     .then(() => {
       window.store.set({ apiError: false });
       getChats();
