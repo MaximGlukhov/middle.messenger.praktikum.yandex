@@ -85,6 +85,8 @@
   }
 
   &__currentUserBtns {
+    position: relative;
+    z-index: 50;
     display: flex;
     margin-left: auto;
     gap: 5px;
@@ -204,5 +206,10 @@
     background-image: url('../../assets/arrowBtn.svg');
     border: none;
     background-color: transparent;
+  }
+
+  &__createChat {
+    display: block;
+    margin: 10px auto;
   }
 }

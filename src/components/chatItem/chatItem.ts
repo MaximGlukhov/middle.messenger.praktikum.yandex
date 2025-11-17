@@ -26,7 +26,7 @@ class ChatItem extends Block<IChat, {}> {
   public render(): string {
     return `
       <div class="user {{#if active}}user_active{{/if}}">
-        <img src="{{avatar}}" class="user__avatar" alt="Аватар пользователя" />
+        <img src="{{avatar}}" class="user__avatar" alt="Картинка чата" />
         <div class="user__description">
           <p class="user__name"><strong>{{name}}</strong></p>
           <p class="user__lastMessage">

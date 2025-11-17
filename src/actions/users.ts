@@ -37,8 +37,8 @@ export const editAvatar = (model: FormData) => {
   window.store.set({ isLoading: true });
   usersApi
     .editAvatar(model)
-    .then(() => {
-      window.store.set({ apiError: false });
+    .then((res) => {
+      window.store.set({ apiError: false, user: res });
     })
     .catch((err) => {
       window.store.set({ apiError: err.reason });

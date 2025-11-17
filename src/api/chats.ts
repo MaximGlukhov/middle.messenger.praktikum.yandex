@@ -20,6 +20,10 @@ export default class ChatsApi {
     return chatsApi.put('/users', { data });
   }
 
+  async deleteUser(data: IAddUsersChatData): Promise<void> {
+    return chatsApi.delete('/users', { data });
+  }
+
   async remove(data: { chatId: number }): Promise<void> {
     return chatsApi.delete('', { data });
   }

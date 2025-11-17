@@ -13,6 +13,7 @@ import { debounce } from '../../utils/mydash';
 import type { GetChats } from '../../api/types';
 import type { IUser } from '../../types';
 import type { PlainObject } from '../../utils/isEqual';
+import { CreateChatModal } from '../../components/createChatModal';
 
 interface IChatsFields {
   message: string;
@@ -107,6 +108,10 @@ class ChatsPage extends Block<IChatsProps, IChatsChildren> {
         onOk: () => this.setProps({ ...this.props, showRemoveUserModal: false }),
       }),
 
+      CreateChatModal: new CreateChatModal({
+        onOk: () => this.setProps({ ...this.props, showAddChatModal: false }),
+      }),
+
       ProfileLink: new Button({
         color: 'text',
         title: 'Профиль',
@@ -170,6 +175,18 @@ class ChatsPage extends Block<IChatsProps, IChatsChildren> {
             user_id: prop.user_id,
           }))
           .reverse(),
+      }),
+
+      AddChatButton: new Button({
+        title: 'Создать чат',
+        color: 'primary',
+        className: 'chats__createChat',
+        onClick: () => {
+          this.setProps({
+            ...this.props,
+            showAddChatModal: true,
+          });
+        },
       }),
     });
 
@@ -260,6 +277,7 @@ class ChatsPage extends Block<IChatsProps, IChatsChildren> {
   <div class="chats__bar">
     {{{ProfileLink}}}
     {{{SearchInput}}}
+    {{{AddChatButton}}}
     {{{ ChatsList }}}
   </div>
   <div class="chats__messages">
@@ -272,10 +290,12 @@ class ChatsPage extends Block<IChatsProps, IChatsChildren> {
           <img class="chats__currentUserAvatar" src="/src/assets/avatar-default.svg" alt="аватар">
         {{/if}}
         <p class="chats__currentUserName"><strong>{{user.first_name}}</strong></p>
-        <div class="chats__currentUserBtns">
-          {{{ AddUserButton }}}
-          {{{ RemoveUserButton }}}
-        </div>
+        {{#if activeChat}}
+          <div class="chats__currentUserBtns">
+            {{{ AddUserButton }}}
+            {{{ RemoveUserButton }}}
+          </div>
+        {{/if}}
       </header>
 
       <section class="chats__history">
@@ -296,6 +316,9 @@ class ChatsPage extends Block<IChatsProps, IChatsChildren> {
   {{#if showRemoveUserModal}}
     {{{ RemoveUserModal }}}
   {{/if}}   
+  {{#if showAddChatModal}}  
+    {{{ CreateChatModal }}}
+  {{/if}}      
   `;
   }
 }

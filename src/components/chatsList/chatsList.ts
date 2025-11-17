@@ -40,8 +40,8 @@ class ChatsList extends Block<IChatList, IChatListChildren> {
     this.children.chatsItems = this.props.chatsList?.map(
       (props, _index) =>
         new ChatItem({
-          avatar: props.last_message?.user.avatar
-            ? `https://ya-praktikum.tech/api/v2/resources/${props.last_message?.user.avatar}`
+          avatar: props.avatar
+            ? `https://ya-praktikum.tech/api/v2/resources/${props.avatar}`
             : '/src/assets/avatar-default.svg',
           countMessage: props.unread_count,
           name: props.title,

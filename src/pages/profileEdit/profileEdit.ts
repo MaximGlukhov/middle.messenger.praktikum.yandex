@@ -5,6 +5,7 @@ import { connect } from '../../utils/connect';
 import type { PlainObject } from '../../utils/isEqual';
 import type { IUser } from '../../types';
 import { editUserData } from '../../actions/users';
+import { getUserData } from '../../actions/auth';
 
 export interface IProfileEditProps {
   formState: {
@@ -68,6 +69,7 @@ class ProfileEditPage extends Block<IProfileEditProps, IProfileEditChildren> {
       }),
       AddNewAvatarModal: new AddNewAvatarModal({
         onOk: () => this.setProps({ ...this.props, showAddNewAvatarModal: false }),
+        onClose: () => this.setProps({ ...this.props, showAddNewAvatarModal: false }),
       }),
 
       EmailInput: new Input({
@@ -285,6 +287,7 @@ class ProfileEditPage extends Block<IProfileEditProps, IProfileEditChildren> {
               email: this.props.formState.email,
               phone: this.props.formState.phone,
             });
+            getUserData();
             if (props.onRoutProfile) {
               props.onRoutProfile();
             }
@@ -374,7 +377,21 @@ class ProfileEditPage extends Block<IProfileEditProps, IProfileEditChildren> {
   componentDidUpdate(oldProps: IProfileEditProps, newProps: IProfileEditProps) {
     if (oldProps.user !== newProps.user) {
       this.updateAllInputs(newProps.user);
+      if (newProps.user !== null) {
+        this.setProps({
+          ...this.props,
+          formState: {
+            email: newProps.user.email,
+            login: newProps.user.login,
+            firstName: newProps.user.first_name,
+            secondName: newProps.user.second_name,
+            displayName: newProps.user.display_name ?? '',
+            phone: newProps.user.phone,
+          },
+        });
+      }
     }
+
     return true;
   }
 

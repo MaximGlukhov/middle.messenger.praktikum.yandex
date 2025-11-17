@@ -24,6 +24,9 @@ export default class AddNewAvatarModal extends Block<IAddNewAvatarModalProps, {}
           }
           props.onOk();
         },
+        onClose: () => {
+          props.onOk();
+        },
         Body: new ModalBody({
           onFileSelect: (file: File) => this.handleFileSelect(file),
         }),

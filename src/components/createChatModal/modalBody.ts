@@ -2,7 +2,7 @@ import Block from '../../core/block';
 import { Input } from '../input';
 
 interface IModalBodyProps {
-  onLoginSelect: (title: string) => void;
+  onChatSelect: (title: string) => void;
   [key: string]: unknown;
 }
 
@@ -10,27 +10,27 @@ export class ModalBody extends Block<IModalBodyProps, {}> {
   constructor(props: IModalBodyProps) {
     super('div', {
       ...props,
-      className: 'removeUserModal__body',
-      RemoveUserInput: new Input({
-        title: 'ID пользователя',
+      className: 'addUserModal__body',
+      AddChatInput: new Input({
+        title: 'Название чата',
         type: 'text',
-        name: 'login',
+        name: 'chat',
         events: {
-          change: (e: InputEvent) => this.handleLoginSelect(e),
+          change: (e: InputEvent) => this.handleChatSelect(e),
         },
       }),
     });
   }
 
-  private handleLoginSelect(e: InputEvent) {
+  private handleChatSelect(e: InputEvent) {
     const { value } = e.target as HTMLInputElement;
 
-    if (value && this.props.onLoginSelect) {
-      this.props.onLoginSelect(value);
+    if (value && this.props.onChatSelect) {
+      this.props.onChatSelect(value);
     }
   }
 
   render(): string {
-    return `{{{ RemoveUserInput }}}`;
+    return `{{{ AddChatInput }}}`;
   }
 }
