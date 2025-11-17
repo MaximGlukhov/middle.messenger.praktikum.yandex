@@ -5,7 +5,6 @@ import { ModalBody } from './modalBody';
 
 interface IAddNewAvatarModalProps {
   onOk: () => void;
-  onClose: () => void;
   file?: File;
   [key: string]: unknown;
 }
