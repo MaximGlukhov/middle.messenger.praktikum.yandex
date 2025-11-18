@@ -7,6 +7,8 @@ interface IInputLabelProps {
   name: string;
   type: string;
   placeholder?: string;
+  readonly?: boolean;
+  valueName?: string;
   onChange?: (e: InputEvent) => void;
   onBlur?: (e: FocusEvent) => void;
   onFocus?: (e: FocusEvent) => void;
@@ -28,6 +30,8 @@ export default class InputLabel extends Block<IInputLabelProps, IInputLabelChild
         name: props.name,
         type: props.type,
         placeholder: props.placeholder,
+        readonly: props.readonly,
+        value: props.valueName,
         events: {
           change: props.onChange,
           blur: props.onBlur,
@@ -36,6 +40,16 @@ export default class InputLabel extends Block<IInputLabelProps, IInputLabelChild
         },
       }),
     });
+  }
+
+  componentDidUpdate(oldProps: IInputLabelProps, newProps: IInputLabelProps) {
+    if (oldProps.valueName !== newProps.valueName) {
+      this.children.Input.setProps({
+        ...this.children.Input.props,
+        value: newProps.valueName,
+      });
+    }
+    return true;
   }
 
   public value() {

@@ -1,6 +1,10 @@
 import { Button, Input } from '../../components';
-import type InputLabel from '../../components/input/inputLabel';
+import { ROUTER } from '../../const/routesPath';
 import Block from '../../core/block';
+import type InputLabel from '../../components/input/inputLabel';
+import { connect } from '../../utils/connect';
+import type { PlainObject } from '../../utils/isEqual';
+import { signinUser } from '../../actions/auth';
 
 interface ISigninFields {
   email: string;
@@ -29,8 +33,8 @@ interface ISigninChildren {
   InputRepeatPassword: Block;
 }
 
-export default class SigninPage extends Block<ISigninProps, ISigninChildren> {
-  constructor(props: ISigninProps) {
+class SigninPage extends Block<ISigninProps, ISigninChildren> {
+  constructor(props: Partial<ISigninProps>) {
     super('main', {
       ...props,
       formState: {
@@ -285,7 +289,15 @@ export default class SigninPage extends Block<ISigninProps, ISigninChildren> {
           const hasEmpty = Object.values(formState).some((v) => !v);
 
           if (!hasErrors && !hasEmpty) {
-            console.log(this.props.formState);
+            const data = {
+              first_name: this.props.formState.firstName,
+              second_name: this.props.formState.secondName,
+              login: this.props.formState.login,
+              email: this.props.formState.email,
+              password: this.props.formState.password,
+              phone: this.props.formState.phone,
+            };
+            signinUser(data);
           } else if (hasEmpty) {
             if (!email) {
               this.setProps({
@@ -382,11 +394,9 @@ export default class SigninPage extends Block<ISigninProps, ISigninChildren> {
       }),
 
       SignUpButton: new Button({
-        title: 'Нет аккаунта?',
+        title: 'Войти',
         color: 'text',
-        onClick(e: MouseEvent) {
-          e.preventDefault();
-        },
+        onClick: () => window.router?.go(ROUTER.login),
       }),
     });
   }
@@ -411,3 +421,12 @@ export default class SigninPage extends Block<ISigninProps, ISigninChildren> {
     `;
   }
 }
+
+const mapStateToProps = (state: PlainObject) => {
+  return {
+    isLoading: state.isLoading,
+    signinError: state.signinError,
+  };
+};
+
+export default connect(mapStateToProps)(SigninPage);

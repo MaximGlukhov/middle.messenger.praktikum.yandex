@@ -1,6 +1,11 @@
 import Block from '../../core/block';
 import { AddNewAvatarModal, Button, Input } from '../../components';
 import { UserCard } from '../../components/userCard';
+import { connect } from '../../utils/connect';
+import type { PlainObject } from '../../utils/isEqual';
+import type { IUser } from '../../types';
+import { editUserData } from '../../actions/users';
+import { getUserData } from '../../actions/auth';
 
 export interface IProfileEditProps {
   formState: {
@@ -20,6 +25,8 @@ export interface IProfileEditProps {
     phone: string;
   };
   showAddNewAvatarModal: boolean;
+  user: IUser | null;
+  onRoutProfile: () => void;
   [key: string]: unknown;
 }
 
@@ -34,8 +41,8 @@ interface IProfileEditChildren {
   NickNameInput: Block;
 }
 
-export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEditChildren> {
-  constructor(props: IProfileEditProps) {
+class ProfileEditPage extends Block<IProfileEditProps, IProfileEditChildren> {
+  constructor(props: Partial<IProfileEditProps>) {
     super('main', {
       ...props,
       formState: {
@@ -62,12 +69,14 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
       }),
       AddNewAvatarModal: new AddNewAvatarModal({
         onOk: () => this.setProps({ ...this.props, showAddNewAvatarModal: false }),
+        onClose: () => this.setProps({ ...this.props, showAddNewAvatarModal: false }),
       }),
 
       EmailInput: new Input({
         name: 'email',
         type: 'text',
         className: 'profileEdit__input',
+        value: props.user?.email,
 
         onChange: (e: InputEvent) => {
           const { value } = e.target as HTMLInputElement;
@@ -100,6 +109,7 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
         name: 'login',
         type: 'text',
         className: 'profileEdit__input',
+        value: props.user?.login,
 
         onChange: (e: InputEvent) => {
           const { value } = e.target as HTMLInputElement;
@@ -137,6 +147,7 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
         name: 'first_name',
         type: 'text',
         className: 'profileEdit__input',
+        value: props.user?.first_name,
 
         onChange: (e: InputEvent) => {
           const { value } = e.target as HTMLInputElement;
@@ -169,6 +180,7 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
         name: 'second_name',
         type: 'text',
         className: 'profileEdit__input',
+        value: props.user?.second_name,
 
         onChange: (e: InputEvent) => {
           const { value } = e.target as HTMLInputElement;
@@ -201,6 +213,7 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
         name: 'display_name',
         type: 'text',
         className: 'profileEdit__input',
+        value: props.user?.display_name ?? '',
 
         onChange: (e: InputEvent) => {
           const { value } = e.target as HTMLInputElement;
@@ -223,6 +236,7 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
         name: 'phone',
         type: 'text',
         className: 'profileEdit__input',
+        value: props.user?.phone,
 
         onChange: (e: InputEvent) => {
           const { value } = e.target as HTMLInputElement;
@@ -265,7 +279,18 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
           const hasEmpty = Object.values(formState).some((v) => !v);
 
           if (!hasErrors && !hasEmpty) {
-            console.log(this.props.formState);
+            editUserData({
+              first_name: this.props.formState.firstName,
+              second_name: this.props.formState.secondName,
+              display_name: this.props.formState.displayName,
+              login: this.props.formState.login,
+              email: this.props.formState.email,
+              phone: this.props.formState.phone,
+            });
+            getUserData();
+            if (props.onRoutProfile) {
+              props.onRoutProfile();
+            }
           } else if (hasEmpty) {
             if (!email) {
               this.setProps({
@@ -332,11 +357,11 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
                 ...this.props,
                 errors: {
                   ...this.props.errors,
-                  phone: 'Введите фамилию',
+                  phone: 'Введите телефон',
                 },
               });
               this.children.PhoneInput.setProps({
-                errorText: 'Введите фамилию',
+                errorText: 'Введите телефон',
               });
             }
 
@@ -348,6 +373,55 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
       }),
     });
   }
+
+  componentDidUpdate(oldProps: IProfileEditProps, newProps: IProfileEditProps) {
+    if (oldProps.user !== newProps.user) {
+      this.updateAllInputs(newProps.user);
+      if (newProps.user !== null) {
+        this.setProps({
+          ...this.props,
+          formState: {
+            email: newProps.user.email,
+            login: newProps.user.login,
+            firstName: newProps.user.first_name,
+            secondName: newProps.user.second_name,
+            displayName: newProps.user.display_name ?? '',
+            phone: newProps.user.phone,
+          },
+        });
+      }
+    }
+
+    return true;
+  }
+
+  private updateAllInputs(user: IUser | null) {
+    const inputs = ['EmailInput', 'LoginInput', 'NameInput', 'SecondNameInput', 'NickNameInput', 'PhoneInput'] as const;
+
+    inputs.forEach((inputName) => {
+      if (this.children[inputName]) {
+        this.children[inputName].setProps({
+          valueName: this.getUserFieldValue(user, inputName),
+        });
+      }
+    });
+  }
+
+  private getUserFieldValue(user: IUser | null, inputName: string): string {
+    if (!user) return '';
+
+    const fieldMap: Record<string, string> = {
+      EmailInput: user.email,
+      LoginInput: user.login,
+      NameInput: user.first_name,
+      SecondNameInput: user.second_name,
+      NickNameInput: user.display_name ?? '',
+      PhoneInput: user.phone,
+    };
+
+    return fieldMap[inputName] || '';
+  }
+
   public render(): string {
     return `
       <form class="container profile">
@@ -389,3 +463,12 @@ export default class ProfileEditPage extends Block<IProfileEditProps, IProfileEd
     `;
   }
 }
+
+const mapStateToProps = (state: PlainObject) => {
+  return {
+    isLoading: state.isLoading,
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(ProfileEditPage);

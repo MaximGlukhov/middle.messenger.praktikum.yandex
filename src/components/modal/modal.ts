@@ -5,6 +5,7 @@ interface IModalProps {
   title: string;
   labelOk: string;
   onOk: () => void;
+  onClose: () => void;
   Body: object;
 }
 
@@ -22,12 +23,17 @@ export default class Modal extends Block {
         title: 'labelCancel',
         color: 'text',
       }),
+      CloseButton: new Button({
+        className: 'modal__closeBtn',
+        onClick: props.onClose,
+      }),
     });
   }
 
   render(): string {
     return `
     <div class="modal">
+        {{{ CloseButton }}}
         <h2 class="title">{{title}}</h2>
         <div class="modal__body">
             {{{ Body }}}
