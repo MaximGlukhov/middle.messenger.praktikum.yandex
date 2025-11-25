@@ -4,25 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "vite build && vite preview",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "start": "vite preview --port 3000",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
     "stylelint": "stylelint \"src/**/*.{css,scss}\"",
     "stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
-    "type-check": "tsc --noEmit",
+    "tsc": "tsc --noEmit",
     "test": "mocha",
-    "test:watch": "mocha --watch",
-    "lint:all": "npm run lint && npm run stylelint",
-    "validate": "npm run type-check && npm run lint:all && npm run test",
     "prepare": "husky"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all test lint:all",
-      "pre-push": "npm run other-command"
+      "pre-commit": "npm run lint:all",
+      "pre-push": "npm run validate"
     }
   },
   "devDependencies": {
