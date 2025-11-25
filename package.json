@@ -17,12 +17,6 @@
     "validate": "npm run tsc && npm run lint:all && npm run test",
     "prepare": "husky"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint:all",
-      "pre-push": "npm run validate"
-    }
-  },
   "devDependencies": {
     "@types/chai": "^5.2.3",
     "@types/handlebars": "^4.0.40",
