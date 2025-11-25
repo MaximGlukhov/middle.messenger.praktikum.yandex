@@ -35,6 +35,7 @@
     "indent": "off",
     "prefer-promise-reject-errors": "off",
     "no-shadow": "off",
+    "no-unused-expressions": "off",
     "max-len": [2, 120]
   }
 }

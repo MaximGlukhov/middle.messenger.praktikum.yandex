@@ -185,6 +185,14 @@ export default abstract class Block<Props extends Record<string, unknown> = {}, 
     }
 
     this._addEvents();
+
+    setTimeout(() => {
+      try {
+        this.dispatchComponentDidMount();
+      } catch (e) {
+        console.error('Error while dispatching componentDidMount:', e);
+      }
+    }, 0);
   }
 
   protected render(): string {
