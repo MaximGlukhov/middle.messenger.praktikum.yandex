@@ -13,9 +13,8 @@
     "stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
     "tsc": "tsc --noEmit",
     "test": "mocha",
-    "lint:all": "npm run lint && npm run stylelint",
-    "validate": "npm run tsc && npm run lint:all && npm run test",
-    "prepare": "husky && husky install"
+    "lint:all": "npm run lint && npm run stylelint && npm run tsc",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/chai": "^5.2.3",
