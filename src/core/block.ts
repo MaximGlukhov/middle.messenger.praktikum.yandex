@@ -105,10 +105,10 @@ export default abstract class Block<Props extends Record<string, unknown> = {}, 
   }
 
   private _componentDidUpdate(oldProps: Props, newProps: Props) {
-    // const shouldRender = this.componentDidUpdate(oldProps, newProps);
-    // if (shouldRender) {
-    //   this._render();
-    // }
+    const shouldRender = this.componentDidUpdate(oldProps, newProps);
+    if (shouldRender) {
+      this._render();
+    }
   }
 
   componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
