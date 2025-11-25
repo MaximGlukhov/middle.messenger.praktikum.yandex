@@ -14,7 +14,7 @@
     "tsc": "tsc --noEmit",
     "test": "mocha",
     "lint:all": "npm run lint && npm run stylelint && npm run tsc",
-    "prepare": "husky && husky install"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/chai": "^5.2.3",
