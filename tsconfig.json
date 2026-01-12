@@ -23,5 +23,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
+  "ts-node": {
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true
+  },
   "include": ["src"]
 }

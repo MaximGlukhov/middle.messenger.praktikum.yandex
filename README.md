@@ -5,6 +5,7 @@
 - `npm run lint` - проверка ESLint
 - `npm run stylelint` - проверка stylelint
 - `npm run tsc` - проверка ts
+- `npm run test` - запуск тестов
 
 - макет - https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0-1&p=f&t=E0Ar5ZRTTeQfdunB-0
 - ссылка на Netlify - https://chatappyandex.netlify.app
